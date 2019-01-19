@@ -22,7 +22,8 @@ m=1.;  %Mass
 
 %Electromagnetic Field Input
 B0=[0. 0. 1.]';   % Initial Magnetic Field (Column vector)
-E0=[0. 0. 0.]';   % Initial Electric Field (Column vector)
+% E0=[0. 0. 0.]';   % Initial Electric Field (Column vector)
+E0 = [0, 0.1, 0]';
 Bmag=norm(B0);    % Magnitude of B0 (2-norm)
 
 % Compute timestep
