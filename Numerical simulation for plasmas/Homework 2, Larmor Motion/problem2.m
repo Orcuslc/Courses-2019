@@ -4,7 +4,10 @@ dt = (T-T0)/N;
 q = 1; m = 1;
 x0 = [0, 1, 0]'; v0 = [1, 0, 0]';
 
-[x, v, t] = larmor_motion_solver(@E2, @B1, q, m, x0, v0, T0, T, dt);
+B1 = @(x, t) [0, 0, 1]';
+E2 = @(x, t) [0, 0.1, 0]';
+
+[x, v, t] = larmor_motion_solver(E2, B1, q, m, x0, v0, T0, T, dt);
 [xt, vt, tt] = larmor_motion_analytical_2(N);
 
 % Plot trajectory
@@ -36,7 +39,7 @@ errors = [];
 Ns = 10.^[3:0.5:6];
 for N = Ns
     dt = (T-T0)/N;
-    [x, v, t] = larmor_motion_solver(@E2, @B1, q, m, x0, v0, T0, T, dt);
+    [x, v, t] = larmor_motion_solver(E2, B1, q, m, x0, v0, T0, T, dt);
     [xt, vt, tt] = larmor_motion_analytical_2(N);
     errors = [errors norm(xt(:, end)-x(:, end))];
 end
