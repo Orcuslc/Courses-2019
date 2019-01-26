@@ -35,11 +35,11 @@ set(gca, 'FontSize', 12);
 title('x-Position vs. Time');
 
 errors = [];
-% Ns = 10.^[3:6];
-Ns = 10.^[3:0.5:6];
+Ns = 10.^[3:6];
+% Ns = 10.^[3:0.5:6];
 for N = Ns
     dt = (T-T0)/N;
-    [x, v, t] = larmor_motion_solver(E1, B1, q, m, x0, v0, T0, T, dt);
+    [x, v, t] = larmor_motion_solver(E1, B1, q, m, x0, v0, T0, T, dt, 1);
     [xt, vt, tt] = larmor_motion_analytical_1(N);
     errors = [errors norm(xt(:, end)-x(:, end))];
 end

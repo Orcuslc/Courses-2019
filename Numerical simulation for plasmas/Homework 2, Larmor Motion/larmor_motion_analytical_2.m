@@ -33,8 +33,8 @@ xt=zeros(3,nt);
 vt=zeros(3,nt);
 
 om=q*B0(3)/m;
-vp = sqrt(v0(1)*v0(1)+v0(2)*v0(2)); % perpendicular part of velocity
 drift = cross(E0, B0)/sum(B0.^2);
+vp = sqrt(v0(1)*v0(1)+v0(2)*v0(2)); % perpendicular part of velocity
 
 vt(1, :) = vp*cos(om*t);
 vt(2, :) = -vp*sin(om*t);
