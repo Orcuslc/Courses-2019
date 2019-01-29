@@ -34,7 +34,7 @@
 \begin{enumerate}
 	\item[a.] $\{(x,y)\in\mathbb{R}^2||xy|\geq 1\}$.
 
-
+	Nonconvex.
 
 	\item[b.] $\{(x,y)\in\mathbb{R}^2|x\text{ is a postive interger}\}$.
 
@@ -42,21 +42,40 @@
 
 	\item[c.] $\{(x,y)\in\mathbb{R}^2|x^2+y^2\leq1\text{ or }x+y\leq 0\}$.
 
-
+	Nonconvex.
 
 	\item[d.] $\{(x,y)\in\mathbb{R}^2|x^2+y^2\leq1\text{ and }x+y\leq 0\}$.
+
+	Convex.
 	\item[e.] $\{(x,y)\in\mathbb{R}^2|x^2+y^2=1\}$.
+
+	Nonconvex.
+
 	\item[f.] The set of all copositive matrices:  $\{X\in\mathbb{S}^n|\bu\top X\bu\geq0 \text{ for any }\bu\geq0\}$.
+
+	Convex.
 	\item[g.] Second order cone:  $\{(\bx,t)\in\mathbb{R}^{n+1}|\|\bx\|_2\leq t\}$, where $\|\cdot\|_2$ represents the Euclidean norm.
+
+	Convex.
 	\item[h.] The set of all rank-one $n\times n$ positive semi-definite matrices: $\{X\in\mathbb{S}^n|X=\bx\bx^{\top},\bx\in\mathbb{R}^n\}$.
+
+	Nonconvex.
 	\item[i.] $\{X\in\mathbb{S}^n|-1\leq\text{tr}{X}\leq 1\}$, where $\text{tr}{X}=\sum_{i=1}^{n}X_{ii}$ is the trace of $X$.
+
+	Convex.
 \end{enumerate}
 \bigskip
 
 \noindent\textbf{Problem 2:} Are the following functions convex? You need to provide reasons only if your answer is Yes.
 \begin{enumerate}
 \item[a.] $f(X,Y)=\lambda_{\max}(X-Y)$ where $X,Y\in\mathbb{S}^n$.
+
+Yes. Since $X\in\mathbb{S}^n $, $ g(X) = \lambda_{\max}(X) = \lVert X\rVert_2 $ is convex, and $h(X, Y) = X-Y$ is affine. Hence $f(X, Y) = g(h(X, Y))$ is convex.
+
 \item[b.] Hinge loss function: $f(\bx)=\frac{1}{n}\sum_{i=1}^n\max\{1-b_i\ba_i\top \bx,0\}$ where $\ba_i\in\mathbb{R}^n$ is a feature vector and $b_i\in\{1,-1\}$ is the class label of instance $i$ for $i=1,\dots,n$.
+
+Yes. $f$ is a composition of affine function and pointwise maximum.
+
 \item[c.] 
 $$
 f(x)=\left\{\begin{array}{ll}
@@ -65,6 +84,9 @@ x\ln(x)&\text{ if }0< x\leq 1\\
 \end{array}
 \right.
 $$
+
+Yes. In $(0, 1]$, $f''(x) = \frac{1}{x} > 0$, and $f = \infty $ outside the interval.
+
 \item[d.] Entropy function: 
 $$
 f(\bx)=
@@ -75,18 +97,75 @@ f(\bx)=
 \end{array}
 \right.
 $$
+
+Yes. It's just an affine combination of the function in problem c.
+
 \item[e.] The density function of a standard univariate Gaussian distribution $\mathcal{N}(0,1)$. 
+
+No.
+
 \item[g.] Sigmoid function: $f(x)=\frac{\exp(x)}{1+\exp(x)}$ for $x\in\mathbb{R}$.
+
+No.
+
 \item[f.] $f(x)=\min\{x,0\}$ for $x\in\mathbb{R}$.
+
+Yes. It's the pointwise min of two affine functions.
+
 \item[h.] $f(x)=(\max\{x,0\})^2$ for $x\in\mathbb{R}$.
+
+Yes. 
+$$
+f(x) = \left\{
+\begin{aligned}
+&0, &\ x < 0, \\
+&x^2, &\ x \ge 0.
+\end{aligned}
+\right.
+$$
+And by definition we know $f$ is convex.
+
 \item[i.] $f(x)=(\max\{x,-1\})^2$ for $x\in\mathbb{R}$.
+
+No.
+
 \item[j.] $f(x)=h(g(x))$ where $g(x)=x^2$ and $h(x)=\mathbf{1}_{[1,2]}(x)=\left\{\begin{array}{ll}0&\text{ if }x\in[1,2]\\+\infty&\text{ otherwise}\end{array}\right.$, i.e., the indicator function of $[0,1]$.
 \end{enumerate}
+
+No.
+
 
 \noindent\textbf{Problem 3:} Suppose $f$ is an extended-real-valued function on $\mathbb{R}^n$.
 Show that $f$ is convex if and only if $g_{\bx}(t):=f(\bx+t\bv)$ (as a function on $\mathbb R$) is convex for any $\bx$ and $\bv$ in $\mathbb{R}^n$.
 
+\begin{proof}
+$``\Longleftarrow''$: 
+Suppose $g_x(t) = f(x+tv) $ is convex. For any $x, y \in\mathbb{R}^n $ and $0\le \theta\le 1$, since 
+$$
+\theta g(s) + (1-\theta)g(t) \ge g(\theta s + (1-\theta)t),
+$$
+we have
+$$
+\theta f(x+sv) + (1-\theta) f(x+tv) \ge f(x+\theta sv+(1-\theta)tv) = f(x+v(\theta s+ (1-\theta)t)).
+$$
+Now let $s = 0, t = 1$, and $v = y-x$, we have
+$$
+\theta f(x) + (1-\theta)f(y) \ge f(\theta x + (1-\theta)y).
+$$
 
+
+$``\implies''$:
+Suppose $f$ is convex, then for each $s, t  \in\mathbb{R} $ and $0\le \theta \le 1$, 
+$$
+\begin{aligned}
+\theta g(s) + (1-\theta)g(t) &= \theta f(x+sv) + (1-\theta) f(x+tv) \\
+&\ge f(\theta(x+sv)+(1-\theta)(x+tv)) \\
+&=f(x+v(\theta s+ (1-\theta)t)) = g(\theta s+ (1-\theta)t).
+\end{aligned}
+$$
+Hence $g$ is convex.
+
+\end{proof}
 
 \end{document}
 
