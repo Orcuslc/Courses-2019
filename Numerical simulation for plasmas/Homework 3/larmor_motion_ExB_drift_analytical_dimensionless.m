@@ -1,4 +1,4 @@
-function [xt, vt, t] = larmor_motion_analytical_2(N)
+function [xt, vt, t] = larmor_motion_ExB_drift_analytical_dimensionless(N)
 % N: number of timesteps
 
 %Setting TimeSpan and Initial Conditions
@@ -26,6 +26,16 @@ t=(tspan(1):dt:tspan(end))';
 %Compute total number of times
 nt=size(t,1);
 
+% Normalization
+vp = sqrt(v0(1)^2+v0(2)^2);
+v0 = v0/vp;
+E0 = E/(vp*Bmag);
+B0 = B/Bmag;
+Omega = q*Bmag/m;
+t = t*Omega;
+r_L = vp/Omega;
+x0 = x0/r_L;
+
 %========================================================================
 %Compute Analytic Solution
 %========================================================================
@@ -33,8 +43,8 @@ xt=zeros(3,nt);
 vt=zeros(3,nt);
 
 om=q*B0(3)/m;
-drift = cross(E0, B0)/sum(B0.^2);
 vp = sqrt(v0(1)*v0(1)+v0(2)*v0(2)); % perpendicular part of velocity
+drift = cross(E0, B0)/sum(B0.^2);
 
 vt(1, :) = vp*cos(om*t);
 vt(2, :) = -vp*sin(om*t);

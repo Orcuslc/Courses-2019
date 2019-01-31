@@ -8,7 +8,7 @@ B1 = @(x, t) [0, 0, 1]';
 E2 = @(x, t) [0, 0.1, 0]';
 
 [x, v, t] = larmor_motion_solver(E2, B1, q, m, x0, v0, T0, T, dt);
-[xt, vt, tt] = larmor_motion_analytical_2(N);
+[xt, vt, tt] = larmor_motion_analytical_ExB_drift(N);
 
 % Plot trajectory
 figure;
@@ -40,7 +40,7 @@ Ns = 10.^[3:6];
 for N = Ns
     dt = (T-T0)/N;
     [x, v, t] = larmor_motion_solver(E2, B1, q, m, x0, v0, T0, T, dt, 1);
-    [xt, vt, tt] = larmor_motion_analytical_2(N);
+    [xt, vt, tt] = larmor_motion_analytical_ExB_drift(N);
     errors = [errors norm(xt(:, end)-x(:, end))];
 end
 figure;

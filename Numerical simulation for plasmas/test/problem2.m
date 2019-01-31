@@ -1,14 +1,14 @@
 T0 = 0; T = 20*pi;
-N = 2000;
+N = 2000000;
 dt = (T-T0)/N;
 q = 1; m = 1;
 x0 = [0, 1, 0]'; v0 = [1, 0, 0]';
 
 B1 = @(x, t) [0, 0, 1]';
-E1 = @(x, t) [0, 0, 0]';
+E2 = @(x, t) [0, 0.1, 0]';
 
-[x, v, t] = larmor_motion_solver(E1, B1, q, m, x0, v0, T0, T, dt);
-[xt, vt, tt] = larmor_motion_analytical_no_E(N);
+[x, v, t] = larmor_motion_solver(E2, B1, q, m, x0, v0, T0, T, dt);
+[xt, vt, tt] = larmor_motion_analytical_ExB_drift(N);
 
 % Plot trajectory
 figure;
@@ -34,17 +34,17 @@ ylabel('Position, $x$', 'Interpreter', 'latex');
 set(gca, 'FontSize', 12);
 title('x-Position vs. Time');
 
-errors = [];
-Ns = 10.^[3:6];
-% Ns = 10.^[3:0.5:6];
-for N = Ns
-    dt = (T-T0)/N;
-    [x, v, t] = larmor_motion_solver(E1, B1, q, m, x0, v0, T0, T, dt, 1);
-    [xt, vt, tt] = larmor_motion_analytical_no_E(N);
-    errors = [errors norm(xt(:, end)-x(:, end))];
-end
-figure;
-loglog(Ns, errors, '*-', 'LineWidth', 2.0); grid on;
-xlabel("Number of timesteps, $N$", 'Interpreter', 'latex');
-ylabel("2-norm of errors in position $x$ at $t = 20\pi$", 'Interpreter', 'latex');
-title("Error vs. timesteps");
+% errors = [];
+% Ns = 10.^[3:6];
+% % Ns = 10.^[3:0.5:6];
+% for N = Ns
+%     dt = (T-T0)/N;
+%     [x, v, t] = larmor_motion_solver(E2, B1, q, m, x0, v0, T0, T, dt, 1);
+%     [xt, vt, tt] = larmor_motion_analytical_2(N);
+%     errors = [errors norm(xt(:, end)-x(:, end))];
+% end
+% figure;
+% loglog(Ns, errors, '*-', 'LineWidth', 2.0); grid on;
+% xlabel("Number of timesteps, $N$", 'Interpreter', 'latex');
+% ylabel("2-norm of errors in position $x$ at $t = 20\pi$", 'Interpreter', 'latex');
+% title("Error vs. timesteps");
