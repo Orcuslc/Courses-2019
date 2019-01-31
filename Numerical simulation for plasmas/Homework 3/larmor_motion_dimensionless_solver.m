@@ -81,8 +81,23 @@ switch order
         
         % x0, x1 -> x2
         x(:, 3) = x0 + v(:, 2)*2*dt;
-        v(:, 3) = v0 + drift(v(:, 3), x(:, 3), t(2))*dt;
-        
+        v(:, 3) = v0 + drift(v(:, 3), x(:, 3), t(2))*dt;  
+%         t0 = T0;
+%         for i = 1:8
+%             t1 = t0 + dt/8;
+%             x1 = x0 + v0*dt/8;
+%             v1 = v0 + drift(v0, x0, t0)*dt/8;
+%             t0 = t1; x0 = x1; v0 = v1;
+%         end
+%         x(:, 2) = x0; v(:, 2) = v0;
+%         for i = 1:8
+%             t1 = t0 + dt/8;
+%             x1 = x0 + v0*dt/8;
+%             v1 = v0 + drift(v0, x0, t0)*dt/8;
+%             t0 = t1; x0 = x1; v0 = v1;
+%         end
+%         x(:, 3) = x0; v(:, 3) = v0;
+%         
         for i = 3:(length(t)-1)
             x(:, i+1) = x(:, i) + (23*v(:, i)-16*v(:, i-1)+5*v(:, i-2))*dt/12;
             v(:, i+1) = v(:, i) + (23*drift(v(:, i), x(:, i), t(i))-16*drift(v(:, i-1), x(:, i-1), t(i-1))+5*drift(v(:, i-2), x(:, i-2), t(i-2)))*dt/12;

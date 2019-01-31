@@ -23,7 +23,7 @@ E = @(x, t) 0.1*vp*B0*[0, 1, 0]';
 [xt, vt, tt] = larmor_motion_analytical_ExB_drift(N);
 
 % Plot trajectory
-figure;
+figure
 plot(x(1, :), x(2, :), 'r:', 'LineWidth', 1.5); hold on;
 plot(xt(1, :), xt(2, :), 'b-', 'LineWidth', 1.5); hold on;
 legend('numerical', 'analytical');

@@ -36,7 +36,7 @@ drift = cross(E0, B0)/Bmag^2;
 u = v0 - drift;
 % u = v0;
 u_perpendicular = sqrt(u(1)^2+u(2)^2);
-u_parallel = u(2);
+u_parallel = u(3);
 omega = q*B0(3)/m;
 
 v(1, :) = u_perpendicular*cos(omega*t);
