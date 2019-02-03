@@ -81,7 +81,7 @@ switch order
         
         % x0, x1 -> x2
         x(:, 3) = x0 + v(:, 2)*2*dt;
-        v(:, 3) = v0 + drift(v(:, 3), x(:, 3), t(2))*dt;  
+        v(:, 3) = v0 + drift(v(:, 2), x(:, 2), t(2))*2*dt;  
 %         t0 = T0;
 %         for i = 1:8
 %             t1 = t0 + dt/8;

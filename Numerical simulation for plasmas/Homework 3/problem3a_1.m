@@ -51,7 +51,7 @@ errors = [];
 Ns = 10.^[3:6];
 % Ns = 10.^[3:0.5:6];
 for N = Ns
-    dt = (T-T0)/N
+    dt = (T-T0)/N;
     [x, v, t] = larmor_motion_dimensionless_solver(E, B, x0, v0, T0, T, dt, 'AB3');
     [xt, vt, tt] = larmor_motion_analytical_ExB_drift(N);
     xt = xt/r_L; vt = vt/vp; tt = tt*Omega;

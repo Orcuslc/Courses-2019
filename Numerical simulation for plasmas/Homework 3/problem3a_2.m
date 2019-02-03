@@ -1,4 +1,6 @@
-T0 = 0; T = 60*pi;
+T0 = 0; 
+% T = 30*pi;
+T = 60*pi;
 N = 10000;
 dt = (T-T0)/N;
 
@@ -23,14 +25,3 @@ xlabel("Position, $x'$", 'Interpreter', 'latex');
 ylabel("Position, $y'$", 'Interpreter', 'latex');
 set(gca, 'FontSize', 12);
 title('Trajectory');
-
-% Plot x position
-figure;
-plot(t, x(1, :), 'r:', 'LineWidth', 2.0); hold on;
-legend('numerical');
-line([0 0], ylim, 'LineWidth', 1.0, 'Color', 'k', 'HandleVisibility', 'off');
-line(xlim, [0 0], 'LineWidth', 1.0, 'Color', 'k', 'HandleVisibility', 'off');
-xlabel("Time, $t'$", 'Interpreter', 'latex');
-ylabel("Position, $x'$", 'Interpreter', 'latex');
-set(gca, 'FontSize', 12);
-title('x-Position vs. Time');

@@ -1,5 +1,5 @@
 T0 = 0; T = 200*pi;
-N = 100000;
+N = 1000000;
 dt = (T-T0)/N;
 
 % Normalized initial conditions
@@ -16,11 +16,13 @@ E = @(x, t) [0, 0, 0]';
 % Plot trajectory
 figure;
 plot3(x(1, :), x(2, :), x(3, :), 'r:', 'LineWidth', 1.5); hold on;
-legend('numerical');
+% legend('numerical');
 % line([0 0], ylim, 'LineWidth', 1.0, 'Color', 'k', 'HandleVisibility', 'off');
 % line(xlim, [0 0], 'LineWidth', 1.0, 'Color', 'k', 'HandleVisibility', 'off'); 
 xlabel("Position, $x'$", 'Interpreter', 'latex');
 ylabel("Position, $y'$", 'Interpreter', 'latex');
+zlabel("Position, $z'$", 'Interpreter', 'latex');
+
 set(gca, 'FontSize', 12);
 grid on;
 title('Trajectory');
