@@ -1,4 +1,4 @@
-function [x, v, t] = larmor_motion_dimensionless_solver(E, B, x0, v0, T0, T, dt, order)
+function [x, v, t] = larmor_motion_dimensionless_solver(E, B, x0, v0, T0, T, dt, order, rel_tol)
 % The 3D dimensionless larmor motion equation is:
 % (1) dx'/dt' = v'
 % (2) dv'/dt' = E'+V'\cross B',
@@ -21,6 +21,8 @@ function [x, v, t] = larmor_motion_dimensionless_solver(E, B, x0, v0, T0, T, dt,
 %     or 2 (Leapfrog)
 %     or AB2 (Adams-Bashforth, second order)
 %     or AB3 (Adams-Bashforth, third order)
+%     or RK45 (Runge-Kutta 4th order, with 5th order correction)
+% rel_tol: for RK45. default: 1e-6;
 
 % Output: 
 % x, v: 3xL matrix, each column is a solution
@@ -35,6 +37,9 @@ drift = @(v, x, t) E(x, t)+cross(v, B(x, t));
 
 if nargin == 7
     order = 1; % default: Euler
+    rel_tol = 1e-6;
+elseif nargin == 8
+    rel_tol = 1e-6;
 end
 
 switch order
@@ -82,25 +87,23 @@ switch order
         % x0, x1 -> x2
         x(:, 3) = x0 + v(:, 2)*2*dt;
         v(:, 3) = v0 + drift(v(:, 2), x(:, 2), t(2))*2*dt;  
-%         t0 = T0;
-%         for i = 1:8
-%             t1 = t0 + dt/8;
-%             x1 = x0 + v0*dt/8;
-%             v1 = v0 + drift(v0, x0, t0)*dt/8;
-%             t0 = t1; x0 = x1; v0 = v1;
-%         end
-%         x(:, 2) = x0; v(:, 2) = v0;
-%         for i = 1:8
-%             t1 = t0 + dt/8;
-%             x1 = x0 + v0*dt/8;
-%             v1 = v0 + drift(v0, x0, t0)*dt/8;
-%             t0 = t1; x0 = x1; v0 = v1;
-%         end
-%         x(:, 3) = x0; v(:, 3) = v0;
-%         
+        
         for i = 3:(length(t)-1)
             x(:, i+1) = x(:, i) + (23*v(:, i)-16*v(:, i-1)+5*v(:, i-2))*dt/12;
             v(:, i+1) = v(:, i) + (23*drift(v(:, i), x(:, i), t(i))-16*drift(v(:, i-1), x(:, i-1), t(i-1))+5*drift(v(:, i-2), x(:, i-2), t(i-2)))*dt/12;
         end
+    case 'RK45'
+        % Runge-Kutta 4th order, with 5th order correction
+        % use `ode45` in matlab for integration
+        % the equation becomes
+        % d^2x/dt^2 = (E+dx/dt \cross B);
+        
+        y0 = [x0', v0'];
+        func = @(t, x) larmor_motion_ode_func(B, E, t, x);
+        options = odeset('RelTol', rel_tol);
+        [t, y] = ode45(func, [T0 T], y0, options);
+        x = y(:, 1:3)';
+        v = y(:, 4:6)';
+        t = t';
 end
         

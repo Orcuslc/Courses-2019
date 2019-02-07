@@ -98,6 +98,50 @@ The plot is shown in Figure \ref{problem 1.4}, where we observe that with the in
 
 \end{enumerate}
 
+\item
+Implementation of Adaptive Runge-Kutta (RK45).
+
+\begin{enumerate}
+\item
+Run AB3 with $N=10000$ steps and compute the error at $\Omega t = 20\pi$. Set relative tolerance for RK45 to the same value, determine how many time steps it requires.
+
+For AB3, $e = 5.3978\times 10^{-6} $. For RK45, the number of time steps with $RelTol = e$ is $N = 993$.
+
+\item
+Plot the trajectory for RK45 with $RelTol = 4\times 10^{-3} $. How many steps does this require? Total relative error?
+
+The plot is shown in Figure \ref{problem 2.2}, where the number of time steps is $N = 257$, and relative total error with repect to analytical solution $e = 4.94\times 10^{-3} $.
+
+\begin{figure}[h]
+\centering
+\vbox{
+\includegraphics[scale=0.4]{problem4b/trajectory.jpg}
+}
+\caption{The trajectory in the $(x, y)$ plane with RK45 scheme and $N=257$ timesteps, and final time $T' = 20\pi$.}
+\label{problem 2.2}
+\end{figure}
+
+\item
+How many RK45 steps required if change $RelTol = 1\times 10^{-6} $. Total relative error? Why total error larger than specified tolerance?
+
+$N = 1153$ for $RelTol = 1\times 10^{-6} $. The relative total error is $e = 1.266\times 10^{-6} $.
+
+It's larger than $RelTol$ since in \texttt{ode45}, the program uses the solution of $5^{th} $ order method to estimate the real solution for adaptive control of the step size of the $4^{th} $ order method. However, the solution of $5^{th} $ order method is not accurate so it still has some small error, which makes the final relative error slightly larger than $RelTol$.
+
+\end{enumerate}
+
+\item Magnetic Mirror Integration with RK45.
+\begin{enumerate}
+\item
+Using conservation of energy as a measure of accuracy, how many AB3 steps need for energy loss less than $0.1\%$? Set RK45 $RelTol = 10^{-3} $, how mant steps require, error in energy?
+
+For AB3, $N = 2208$. 
+
+For RK45, $N = 341$, error in energy is $3.24\times 10^{-3} $.
+
+\end{enumerate}
+
+
 \end{enumerate}
 
 
