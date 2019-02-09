@@ -1,0 +1,59 @@
+\documentclass{article}
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usepackage[plain]{algorithm}
+\usepackage{algpseudocode}
+
+\begin{document}
+\author{Chuan Lu}
+\title{BIOS:7600 Homework 2}
+\maketitle
+
+\medskip
+
+\begin{enumerate}
+
+\item Derive the relationship between FDR and local FDR.
+$$
+\mathbb{E}(\text{fdr}(z)|z\in\mathcal{Z}) = \mathbb{E}(\mathbb{P}(H_0|z)|z\in\mathcal{Z}) = \mathbb{P}(H_0|z\in\mathcal{Z}) = \mathbb{E}(A_Z/R_Z) = \text{Fdr}(\mathcal{Z}).
+$$
+
+\item Show that if $cX \sim \chi_\nu^2 $, then $X \sim \text{Gamma}(\frac{\nu}{2}, \frac{c}{2})$.
+
+By CDF of the $\chi^2 $ distribution,
+$$
+\mathbb{P}(cX < x) = \frac{\gamma(\frac{\nu}{2}, \frac{x}{2})}{\Gamma(\frac{\nu}{2})}.
+$$
+Hence
+$$
+F_X(x) = \mathbb{P}(X < x) = \frac{\gamma(\frac{\nu}{2}, \frac{cx}{2})}{\Gamma(\frac{\nu}{2})} \sim \text{Gamma}(\frac{\nu}{2}, \frac{c}{2}).
+$$
+
+\item State the answer.
+\begin{enumerate}
+\item In BH, the $q$-value with $z = 0$.
+
+$q = 0.5$.
+
+\item What is the $q$-value with $z = 0$ if estimate $\pi_0 $?
+
+
+\item For GMM, what's the range of fdr for $z = 0$?
+
+$(0, \frac{1}{2})$.
+
+\item For GMM, what's the range of fsr for $z\to 0^+ $?
+
+
+\end{enumerate}
+
+\item
+
+\end{enumerate}
+
+
+\end{document}
