@@ -1,0 +1,104 @@
+\documentclass{article}
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usepackage[plain]{algorithm}
+\usepackage{algpseudocode}
+
+\begin{document}
+\author{Chuan Lu}
+\title{BIOS:7600 Homework 3}
+\maketitle
+
+\medskip
+
+\begin{enumerate}
+
+\item Problem 1.8
+
+\begin{enumerate}
+\item Show that 
+$$
+\lim_{\lambda\to 0^+} \frac{\partial}{\partial\lambda}\sum_{j}\text{Var}(\hat\beta_j) = -2\frac{\sigma^2}{n}\sum_{j}d_j^{-2}.
+$$
+\begin{proof}
+Let $\frac{1}{n} X^\top X = QDQ^\top$. Then
+$$
+\begin{aligned}
+\text{Var}(\hat\beta) &= \sigma^2WX^\top XW = \sigma^2\frac{1}{n}(QDQ^\top+n\lambda I)^{-1}nQDQ^\top \frac{1}{n}(QDQ^\top+n\lambda I)^{-1} \\
+&= \sigma^2\frac{1}{n}Q(D+\lambda I)^{-1}D(D+\lambda I)^{-1}Q^{-1} \\
+&= \sigma^2\frac{1}{n}Q \text{diag}\{\frac{d_i}{(d_i+\lambda)^2}\}Q^{-1}.
+\end{aligned}
+$$
+
+Hence,
+$$
+\begin{aligned}
+\frac{\partial}{\partial\lambda}\text{Var}(\hat\beta_j) = \frac{\partial}{\partial\lambda}\left(\frac{\sigma^2}{n}\frac{d_j}{(d_j+\lambda)^2} \right) = \frac{\sigma^2}{n}d_j\frac{-2d_j-2\lambda}{(d_j+\lambda)^4},
+\end{aligned}
+$$
+and
+$$
+\lim_{\lambda\to 0^+}\frac{\partial}{\partial\lambda}\sum_{j}\text{Var}(\hat\beta_j) = \lim_{\lambda\to 0^+} \sum_j \frac{\sigma^2}{n}d_j\frac{-2d_j}{d_j^4} = -2\frac{\sigma^2}{n}\sum_{j}d_j^{-2}.
+$$
+
+\end{proof}
+
+\item Show that $\lim_{\lambda\to 0^+}\frac{\partial}{\partial \lambda}\text{Bias}^2(\hat\beta) = 0 $.
+\begin{proof}
+First
+$$
+\text{MSE}(\hat\beta) = \sum \text{Var}(\hat\beta_j)+\sum\text{Bias}^2(\hat\beta_j).
+$$
+By (1.17) in https://arxiv.org/pdf/1509.09169;Lecture,
+$$
+\begin{aligned}
+\text{MSE}(\hat\beta) = \sigma^2\text{tr}\{\frac{1}{n}QA^{-1}DA^{-1}Q^\top\} + \beta^\top Q(A^{-1}D-I)^\top (A^{-1}D-I)Q^\top\beta,
+\end{aligned}
+$$
+where $A = D+\frac{1}{n}\lambda I$. By (a) we knowthe first term is just $\text{Var}(\hat\beta)$, so
+$$
+\begin{aligned}
+\text{Bias}^2(\hat\beta) &= \beta^\top Q(A^{-1}D-I)^\top (A^{-1}D-I)Q^\top\beta \\
+&= \alpha^\top\text{diag}\{\frac{\frac{1}{n^2}\lambda}{(d_i+\frac{1}{n}\lambda)^2}\}\alpha,
+\end{aligned}
+$$
+where $\alpha = Q^\top\beta $. Then
+$$
+\begin{aligned}
+\lim_{\lambda\to 0^+}\frac{\partial}{\partial\lambda}\text{Bias}^2(\hat\beta) = \lim_{\lambda\to 0^+} \alpha^\top\text{diag}\{\frac{\frac{2}{n^2}\lambda(d_i+\frac{1}{n}\lambda)^2-\frac{2}{n^3}\lambda^2(d_i+\frac{1}{n}\lambda)^2}{(d_i+\frac{1}{n}\lambda)^4}\}\alpha = 0.
+\end{aligned}
+$$
+
+\end{proof}
+
+\end{enumerate}
+
+\item Problem 1.10
+\begin{proof}
+By the definition of linear fitting models,
+$$
+\begin{aligned}
+y_i - \hat{f}_{(-i)}(x_i) &= y_i - \sum_{j=1, j\ne i}^{n}\tilde{s}_{ij}y_{j} = y_i - \sum_{j=1, j\ne i}^{n}\frac{s_{ij}}{1-s_{ii}}y_j \\
+&= \frac{1}{1-s_{ii}}y_i -\sum_{j=1}^{n}\frac{s_{ij}}{1-s_{ii}}y_j \\
+&= \frac{y_i - \hat{f}(x_i)}{1-s_{ii}}.
+\end{aligned}
+$$
+Hence the equality holds.
+
+\end{proof}
+
+\item Problem 1.11
+
+\begin{enumerate}
+\item 
+
+\end{enumerate}
+
+\end{enumerate}
+
+
+\end{document}
