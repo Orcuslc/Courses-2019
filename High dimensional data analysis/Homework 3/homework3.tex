@@ -94,9 +94,45 @@ Hence the equality holds.
 \item Problem 1.11
 
 \begin{enumerate}
-\item 
+\item Based on OLS model, the most important variables are as follows: (ranked in descending order): 
+\begin{itemize} \itemsep -2pt
+\item hfa
+\item age
+\item aro
+\item wght
+\item afe
+\item inc
+\item whz
+\end{itemize}
+
+For ridge regression, we choose $\lambda = 0.1482021$ based on the results of GCV (varies from $10^{-5} $ to $10^5 $). The most important variables are:
+\begin{itemize} \itemsep -2pt
+\item hfa
+\item age
+\item aro
+\item inc
+\item wght
+\item whz
+\item rr
+\end{itemize}
+
+\item For OLS model, the regression coefficient for age is -0.4096032, while for ridge regression, the coefficient is -0.2893046. This is mainly from the significant correlation of \texttt{age} with other variables (which is similar with Example 1.2).
+
+\item The coefficients for both variables with both models are as follows:
+\begin{table}[h]
+\centering
+\begin{tabular}{lllll}
+\cline{1-3}
+\multicolumn{1}{|l|}{}      & \multicolumn{1}{l|}{absu}        & \multicolumn{1}{l|}{afe}        &  &  \\ \cline{1-3}
+\multicolumn{1}{|l|}{OLS}   & \multicolumn{1}{l|}{-0.02698383} & \multicolumn{1}{l|}{0.1531287}  &  &  \\ \cline{1-3}
+\multicolumn{1}{|l|}{Ridge} & \multicolumn{1}{l|}{0.0357972}   & \multicolumn{1}{l|}{0.08959214} &  &  \\ \cline{1-3}
+                            &                                  &                                 &  & 
+\end{tabular}
+\end{table}
+I think the influence of both variables on pneumonia should look similar since \texttt{absu} and \texttt{afe} are similar behaviours. In this case, I think the estimates of ridge regression should be more reasonable.
 
 \end{enumerate}
+
 
 \end{enumerate}
 
