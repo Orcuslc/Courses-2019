@@ -1,4 +1,6 @@
 % Problem 1
+
+figure;
 for i = 1:1000
     y0 = [0, 0, 0, 1, 0, 0]; % [x, v]
     y1 = small_angle_collision(y0, pi/18);
@@ -9,6 +11,7 @@ xlabel('x'); ylabel('y'); zlabel('z');
 title('$\sigma(\theta) = \pi/18$', 'Interpreter', 'latex');
 grid on;
 
+figure;
 for i = 1:1000
     y0 = [0, 0, 0, 1, 0, 0]; % [x, v]
     y1 = small_angle_collision(y0, pi/180);
