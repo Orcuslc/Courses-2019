@@ -16,7 +16,7 @@ while(1)
     end
     x0 = x1;
     
-    size(x, 2)
+    disp(size(x, 2))
     % more than 200 iterations
     if(size(x, 2) > 200)
         warning("May not converge");
