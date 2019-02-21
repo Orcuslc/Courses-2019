@@ -159,7 +159,7 @@ x_1-z_1 \\ \vdots \\ x_d-z_d
 &= 0.
 \end{aligned}
 $$
-
+ 
 Now we show the solution $x = x^* $ satisfies the KKT condition. Notice $\sum_{i=1}^{d}x_i^* = 1 $, so there must be an index $i$, s.t. $x_i^* > 0 $. Then for this $x_i^* $, $\lambda_i = 0 $, so $\nu = z_i - x_i^* = r^* $. Now consider $x_j^* = 0 $, then $\lambda_j = \nu - z_j = r^* - z_j \ge 0 $. Hence $(\lambda^*, \nu^*, x^*)$ satisfies the KKT condition, and hence $x^* $ is the optimal solution.
 
 \end{proof}
@@ -174,7 +174,14 @@ You need to initialize both algorithms at $\bx=\mathbf{0}$. In the PG method wit
 \item[b.] $\ell_1$-ball-constrained logistic regression: $\min\limits_{\bx\in\mathbb{R}^d} \frac{1}{n}\sum_{i=1}^n\log(1+\exp(-b_i(\ba_i\top\bx)))$ s.t. $\|\bx\|_1\leq 10$. Here, $b_i\in\{1,-1\}$ is the class label. Dataset: rcv1.binary. You can directly use the Matlab code by John Duchi (\url{https://stanford.edu/~jduchi/projects/DuchiShSiCh08.html}) for projections onto the $\ell_1$-ball. 
 \end{enumerate}
 
+The codes are in the ``codes'' subfolder, where the \texttt{box\_constrained\_linear\_regression} is the code for problem (a), and \texttt{l1\_constrained\_logistic\_regression} is for problem (b). The results are as follows:
 
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{a.jpg}
+\includegraphics[scale=0.4]{b.jpg}
+\caption{Results. The first one is for problem (a), while the second is for problem (b).}
+\end{figure}
 
 \end{document}
 

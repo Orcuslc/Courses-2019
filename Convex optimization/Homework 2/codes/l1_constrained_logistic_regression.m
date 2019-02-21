@@ -8,9 +8,7 @@ x0 = zeros(size(A, 2), 1);
 
 %% For PG without line search
 
-% L = norm(A'*A);
-% L = 1.907300354573517e+05, eta <= 5.24e-6
-eta = 1e-2;
+eta = 1e-1;
 epsilon = 1e-6;
 
 xs = proximal_gradient(grad_g, prox, x0, eta, epsilon);
@@ -36,4 +34,4 @@ for i = 1:size(xs2, 2)
 end
 semilogy(fx2);
 
-legend('PG wo line search', "PG with line search");
+legend('PG without line search', "PG with line search");

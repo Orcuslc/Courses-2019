@@ -37,7 +37,7 @@ for i = 1:size(xs2, 2)
 end
 semilogy(fx2);
 
-legend('PG wo line search', "PG with line search");
+legend('PG without line search', "PG with line search");
 
 function px = proximal_box(x, l, u)
 % proximal of a h(x) = 1_c(x), where c is a box constrained by l and u.
