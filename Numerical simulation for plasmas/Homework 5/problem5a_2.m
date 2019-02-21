@@ -26,7 +26,8 @@ function [taos, vpars, vpreps] = monte_carlo_collisions(nu, vpars, vpreps)
 % taos: confinement time;
     taos = [];
     
-    for m = 1:32
+    for m = 1:50
+        m
         % dimensionless arguments
         B = @B_4a;
         E = @(x, t) [0, 0, 0]';

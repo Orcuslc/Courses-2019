@@ -6,7 +6,7 @@ function v = small_angle_collision(v, sigma)
 % y: after rotation
 
 [phi1, elev1, radius] = cart2sph(v(1), v(2), v(3));
-theta1 = elev1+pi/2;
+theta1 = -elev1+pi/2;
 
 % rotate to z-axis
 R_z1 = [cos(-phi1), sin(-phi1), 0;
@@ -26,8 +26,8 @@ phi = 2*pi*rand();
 R1 = [cos(theta), 0, -sin(theta);
       0, 1, 0;
       sin(theta), 0, cos(theta)];
-R2 = [cos(phi), sin(phi), 0;
-      -sin(phi), cos(phi), 0;
+R2 = [cos(phi), -sin(phi), 0;
+      sin(phi), cos(phi), 0;
       0, 0, 1];
 
 % rotate back
