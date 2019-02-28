@@ -109,7 +109,7 @@ program hw6
   write(*,'(a,i10,a,es12.4)')"Nstep: ",nn,"        Error in solution: ",err
   
   !Output data to file
-  open(27,file='hw6.dat',status='replace')
+  open(27,file='hw6_2.dat',status='replace')
   do i=0,nn
      write(27,'(f12.4,9es12.4)')t(i),x(1:3,i),v(1:3,i),xt(1:3,i)
   enddo

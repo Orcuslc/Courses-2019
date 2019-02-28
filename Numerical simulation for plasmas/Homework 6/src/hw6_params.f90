@@ -12,8 +12,8 @@
 module hw6_params
   implicit none
   !Parameters
-  integer, parameter :: meth=1           !Timestep Algorithm choice
-  integer, parameter :: nn=100000        !Number of timesteps
+  integer, parameter :: meth=2           !Timestep Algorithm choice
+  integer, parameter :: nn=1000000        !Number of timesteps
   ! Initial Conditions
   real, dimension(1:3) :: x0=(/ 0., 1., 0. /)    !Initial position
   real, dimension(1:3) :: v0=(/ 1., 0., 0. /)    !Initial velocity
