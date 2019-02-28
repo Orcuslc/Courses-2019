@@ -4,8 +4,10 @@ include("./quadrature.jl");
 using .Approximation, .Quadrature, .Polynomial
 
 
-x = -1:.1:1. |> collect;
-f = x -> Legendre(x, 2);
+x = -1:1:1. |> collect;
 
-x, w = legendre_gauss_weights_nodes(3, -1., 1.);
-print(f(x).*w)
+f = x -> x;
+pif = legendre_interpolation(f, x);
+
+x1 = -1.:.2:1. |> collect;
+print(pif(x1));
