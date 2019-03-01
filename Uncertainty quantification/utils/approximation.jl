@@ -1,10 +1,11 @@
 module Approximation
-export legendre_discrete_projection, lagrange_interpolation
+export legendre_discrete_projection, lagrange_interpolation, legendre_interpolation, legendre_least_square, monomial_least_square
 
 include("./polynomial.jl")
 include("./quadrature.jl")
-using .Polynomial:Legendre
+using .Polynomial
 using .Quadrature:legendre_gauss_quadrature
+using LinearAlgebra
 
 function legendre_discrete_projection(f::Function, x::Array, a::Float64, b::Float64, N::Integer)
 	#=
@@ -63,7 +64,7 @@ function horner_scheme(x::Array, c::Array, x0::Array)
 			c: polynomial coefficients, [c0, c1, ..., cN]
 			x0: given interpolation nodes
 	=#
-	y = c[end];
+	y = ones(size(x)).*c[end];
 	for i = length(c)-1:-1:1
 		y = y.*(x .- x0[i]) .+ c[i];
 	end
@@ -84,7 +85,7 @@ function lagrange_interpolation(x::Array, fx::Array)
 end
 
 function lagrange_interpolation(f::Function, x::Array)
-#=
+	#=
 		lagrange interpolation via Newton interpolation formula
 		Input:
 			f: the target function
@@ -94,6 +95,48 @@ function lagrange_interpolation(f::Function, x::Array)
 	=#
 	c = newton_interpolation_coefficients(x, f(x));
 	return x_eval -> horner_scheme(x_eval, c, x);
+end
+
+function legendre_interpolation(x::Array, fx::Array)
+	#=
+		legendre interpolation P = \sum c_k \phi_k(x)
+		Input:
+			x: interpolation nodes
+			fx: corresponding function values
+		Output: the interpolation function P = \sum c_k \phi_k(x)
+	=#
+	degree = length(x)-1;
+	Phi = Legendre(x, degree);
+	c = fx \ Phi;
+	return x_eval -> Legendre(x_eval, degree)*c';
+end
+
+function legendre_least_square(x::Array, fx::Array, degree::Integer)
+	#=
+		legendre least square approximation Q = \sum c_k \phi_k(x)
+		Input:
+			x: interpolation nodes
+			fx: corresponding function values
+			degree: degree of highest polynomial used 
+		Output: the interpolation function Q = \sum c_k \phi_k(x)
+	=#
+	Phi = Legendre(x, degree);
+	c = fx \ Phi;
+	return x_eval -> Legendre(x_eval, degree)*c';
+end
+
+function monomial_least_square(x::Array, fx::Array, degree::Integer)
+	#=
+		monomial least square approximation Q = \sum c_k x^k
+		Input:
+			x: interpolation nodes
+			fx: corresponding function values
+			degree: degree of highest polynomial used 
+		Output: the interpolation function Q = \sum c_k \phi_k(x)
+	=#
+	Phi = Monomial(x, degree);
+	c = fx \ Phi;
+	return x_eval -> Monomial(x_eval, degree)*c';
 end
 
 end # module

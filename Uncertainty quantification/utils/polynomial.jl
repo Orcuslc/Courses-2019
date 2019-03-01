@@ -1,5 +1,6 @@
 module Polynomial
-export Legendre, Legendre_Normalized, Legendre_Normalized_Projection_Error, Legendre_Normalized_Projection_Coefficients, Legendre_Normalized_Projection
+export Legendre, Legendre_Normalized, Legendre_Normalized_Projection_Error, Legendre_Normalized_Projection_Coefficients, Legendre_Normalized_Projection, Monomial
+
 
 function three_term_recurrence(x::Array, N::Integer, p0::Function, p1::Function, rec::Function)
 	#=
@@ -25,6 +26,15 @@ function three_term_recurrence(x::Array, N::Integer, p0::Function, p1::Function,
 	polys[:, 2] = p1(x);
 	for i in 2:N
 	    polys[:, i+1] = rec(i-1, x, polys[:, i-1], polys[:, i]);
+	end
+	return polys;
+end
+
+function Monomial(x::Array, N::Integer)
+	polys = zeros(size(x, 1), N+1);
+	polys[:, 1] .= 1;
+	for i in 1:N
+		polys[:, i+1] = polys[:, i]	.* x;
 	end
 	return polys;
 end
