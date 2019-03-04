@@ -1,0 +1,101 @@
+\documentclass{article}
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usepackage[plain]{algorithm}
+\usepackage{algpseudocode}
+
+\begin{document}
+\author{Chuan Lu}
+\title{BIOS:7600 Homework 4}
+\maketitle
+
+\medskip
+
+\begin{enumerate}
+
+\item Problem 2.3
+
+\begin{proof}
+By 2.2(b), we know $L(\eta |y)$ is a strictly convex function of $\eta$. Notice $\lVert \beta \rVert_1 $ is a convex function of $\beta$, and since there is an affine mapping between $\beta$ and $\eta$, we know $Q(\eta) = Q(\beta| X, y)$ is strictly convex w.r.t. $\eta$. 
+
+By the property of strictly convex functions, $Q$ only has one minimizer, which means $X\beta_1 = X\beta_2 $.
+\end{proof}
+
+\item Problem 2.6
+
+The code is submitted by Dropbox (\texttt{lasso.R} and \texttt{test.R}).
+
+\item Problem 2.7
+
+\begin{enumerate}
+\item $\lambda = 0.2335721$ is chosen by 10-fold cross validation. The code for cross validation is submitted by Dropbox (\texttt{cross\_validation.R}).
+
+The number of nonzero coefficients is 9. We check that lasso is better by a seperate test (since for this model, the whole dataset is used for fitting and thus we do not know out-of-sample prediction errors). 500 points are used for fitting and the rest for test. The MSPE for lasso is 17.14, for OLS is 23.64, for null model is 17.10. So there is evidence that this model is better than OLS, but no such evidence that it is better than the null model.
+
+\item The most important variables by lasso are (not ranked by importance):
+\begin{itemize}
+\item age
+\item rr
+\item hfa
+\item inc
+\item lcw
+\item aro
+\item qcr
+\item afe
+\item absu
+\end{itemize}
+
+\item The number of nonzero coefficients is significantly smaller than the total number of variables. The result of p-values of the OLS model shows there are 14 siginficant coefficients, hence OLS is more liberal than lasso.
+
+\item The result is as follows, where Lasso and ridge estimates are similar while the OLS estimate is different. By the same reason that these two abilities are similar, I think both lasso and ridge estimates are more reasonable than OLS.
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+      & absu    & afe    \\ \hline
+lasso & 0.0276  & 0.0662 \\ \hline
+ridge & 0.0358  & 0.0896 \\ \hline
+OLS   & -0.0270 & 0.1531 \\ \hline
+\end{tabular}
+\end{table}
+
+\end{enumerate}
+
+\item Problem 2.8 (code: \texttt{problem2.8.R})
+
+\begin{enumerate}
+
+\item The results are as follows. Since there are only two significant variables, Lasso is expected to have the most accurate estimate.
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+forward & ridge & lasso \\ \hline
+0.742   & 0.625 & 0.203 \\ \hline
+\end{tabular}
+\end{table}
+
+\item There's an error ``AIC is -infinity for this model, so step cannot proceed''. However, it is more extreme than the previous simulation, so lasso would also have the most accurate estimate, and the difference of lasso with other two methods would be larger than the previous one.
+
+\item The result is as follows. Lasso still does the best job, but the difference is smaller; It's because the number of significant variables increases while the absolute value of coefficient of each variable decreases.
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+forward & ridge & lasso \\ \hline
+0.920   & 0.637 & 0.585 \\ \hline
+\end{tabular}
+\end{table}
+
+\item The same error as in (b). However, I expect ridge regression and forward selection might have the same error with lasso. There's no strong sparsity in this model, so lasso could not do a better job.
+
+\end{enumerate}
+
+\end{enumerate}
+
+
+\end{document}
