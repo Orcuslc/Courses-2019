@@ -1,2 +1,6 @@
 *.m~
+*.o
+*.mod
+*.log
+*.dat
 *.fig
