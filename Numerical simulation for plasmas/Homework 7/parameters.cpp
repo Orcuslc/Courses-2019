@@ -13,7 +13,7 @@ valarray<double> xspan = {0., 1.};
 
 int nx = 128;
 double dx = (tspan[1]-tspan[0])/(double)nx;
-double dt = 1./128.;
+double dt = 1./64.;
 
 // output format: 1-3 row: rho, u, p at t0, etc.
 string save_path = "data.txt";

@@ -3,5 +3,8 @@
 *.mod
 *.log
 *.out
+*.txt
+*.png
+*.jpg
 *.dat
 *.fig
