@@ -154,6 +154,40 @@ $$
 
 \item Problem 3.10
 
+$\gamma = 2.3$ by minimizing \texttt{fit\$cve}.
+
+\begin{enumerate}
+\item 
+The plots of $R^2 $ by MCP and Lasso are shown in Figure \ref{3.10.1}. The max $R^2 $ by MCP is about 0.5, while it is about 0.25.
+
+\begin{figure}[ht]
+\centering
+\vbox{
+\includegraphics[scale=0.3]{Rsquare_MCP.png}
+\includegraphics[scale=0.3]{Rsquare_Lasso.png}
+}
+\caption{Estimates of $R^2 $ with MCP (left) and Lasso (right).}
+\label{3.10.1}
+\end{figure}
+
+\item 
+At the max $R^2 $, 5 variables are chosen from MCP, while 47 variables are chosen from lasso.
+
+\item 
+The gene enters MCP model first is \texttt{C16ORF30}, enters lasso first is \texttt{GNPDA1}. I think there must be something wrong with the code since the genes are different. The paths are shown in Figure \ref{3.10.2}:
+
+\begin{figure}[ht]
+\centering
+\vbox{
+\includegraphics[scale=0.3]{path_MCP.png}
+\includegraphics[scale=0.3]{path_Lasso.png}
+}
+\caption{Fitting paths with MCP (left) and Lasso (right).}
+\label{3.10.2}
+\end{figure}
+
+\end{enumerate}
+
 \end{enumerate}
 
 
