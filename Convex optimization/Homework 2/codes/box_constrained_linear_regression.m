@@ -14,7 +14,7 @@ x0 = zeros(size(A, 2), 1);
 eta = 5e-6;
 epsilon = 1e-6;
 
-xs = proximal_gradient(grad_g, prox, x0, eta, epsilon);
+xs = proximal_gradient(grad_g, prox, x0, eta, 1/(2*eta), 0, epsilon);
 
 f = @(x) 1/2*norm(A*x-b).^2;
 fx = zeros(1, size(xs, 2));

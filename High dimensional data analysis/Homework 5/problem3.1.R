@@ -12,3 +12,10 @@ X[, 21:40] = X[, 21:40]+0.5*z2;
 beta = c(4, 2, -4, -2, rep(0, 996));
 y = rnorm(n, X%*%beta, sd=1.5);
 
+
+# init with OLS solution
+s = svd(X);
+U = s$u; V = s$v; D = s$d;
+beta = V %*% diag(1/D) %*% t(U) %*% y;
+fit = ncvreg(X, y, penalty = "lasso", penalty.factor = 1/abs(beta));
+plot(fit)
