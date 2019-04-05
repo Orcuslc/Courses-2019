@@ -1,0 +1,73 @@
+\documentclass{article}
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usepackage[plain]{algorithm}
+\usepackage{algpseudocode}
+
+\begin{document}
+\author{Chuan Lu}
+\title{PHYS:5905 Homework 9}
+\maketitle
+
+\medskip
+
+\begin{enumerate}
+
+\item HW 9a, Problem 1
+
+\begin{enumerate}
+\item Problem (f)
+
+The plot of of $u(x)$ is shown in Figure \ref{Problem 1(f)}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.8]{1f.png}
+\caption{$u'(x) $ at $t = 0, 0.25, 0.5, 0.75, 1.0$ with $n_x = 128 $, $\Delta t = \frac{1}{512}$.}
+\label{Problem 1(f)}
+\end{figure}
+
+\item Problem (h)
+
+The plot of $J_{\pm} $ at $t' = 0.25$ and $t' = 0.5$ is shown in Figure \ref{Problem 1(h)}. $J_{-} $ is approximately a constant.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.8]{1h.png}
+\caption{$J_{\pm}(x) $ at $t = 0.25, 0.5$.}
+\label{Problem 1(h)}
+\end{figure}
+
+\item Problem (i)
+
+Since $J_{+} $ is not constant, we advance $x'$ at speed $u'+c_s' $ over $t'$. The result is shown in Figure \ref{Problem 1(i)}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.8]{1i.png}
+\caption{numerical and analytical solution of $u $ at $t = 0.25, 1.0$.}
+\label{Problem 1(i)}
+\end{figure}
+
+\item Problem (j)
+
+The result is shown in Figure \ref{Problem 1(j)}. There might be something wrong in my code, since there should already be a shock wave at $t = 2.0$.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.8]{1j.png}
+\caption{numerical and analytical solution of $u $ at $t = 2.0$.}
+\label{Problem 1(j)}
+\end{figure}
+
+\end{enumerate}
+
+
+
+\end{enumerate}
+
+\end{document}
