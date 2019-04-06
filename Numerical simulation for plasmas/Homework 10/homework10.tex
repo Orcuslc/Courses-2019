@@ -1,0 +1,61 @@
+\documentclass{article}
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usepackage[plain]{algorithm}
+\usepackage{algpseudocode}
+
+\begin{document}
+\author{Chuan Lu}
+\title{PHYS:5905 Homework 10}
+\maketitle
+
+\medskip
+
+\begin{enumerate}
+
+\item Problem 1
+
+\begin{enumerate}
+
+\item The output is as follows.
+
+Hello World! I am processor 4 of 16 processors.
+Hello World! I am processor 8 of 16 processors.
+Hello World! I am processor 9 of 16 processors.
+Hello World! I am processor 10 of 16 processors.
+Hello World! I am processor 11 of 16 processors.
+Hello World! I am processor 12 of 16 processors.
+Hello World! I am processor 13 of 16 processors.
+Hello World! I am processor 15 of 16 processors.
+Hello World! I am processor 0 of 16 processors.
+Hello World! I am processor 1 of 16 processors.
+Hello World! I am processor 3 of 16 processors.
+Hello World! I am processor 5 of 16 processors.
+Hello World! I am processor 6 of 16 processors.
+Hello World! I am processor 7 of 16 processors.
+Hello World! I am processor 14 of 16 processors.
+Hello World! I am processor 2 of 16 processors.
+
+\item My method is to use \texttt{MPI\_Barrier()} to block $(i+1)^{th}, \cdots, n^{th} $ processors until the $i^{th} $ processor has executed its code.
+
+\end{enumerate}
+
+\item Problem 2
+
+The plot is shown as follows. I excluded all initialization time in time calculation.
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.8]{2c.png}
+\caption{Computation time vs. number of processors.}
+\label{1}
+\end{figure}
+
+
+\end{enumerate}
+
+\end{document}
