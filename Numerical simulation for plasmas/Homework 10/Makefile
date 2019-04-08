@@ -1,10 +1,10 @@
 MPICC = mpic++
-EXEC = hello_world
+EXEC = mc_pi 
 
 all: ${EXEC}
 
-hello_world: hello_world.cpp 
-	${MPICC} -o hello_world hello_world.cpp
+mc_pi: monte_carlo_pi_parallel.cpp
+	${MPICC} -o mc_pi monte_carlo_pi_parallel.cpp
 
 clean:
 	rm ${EXEC}
