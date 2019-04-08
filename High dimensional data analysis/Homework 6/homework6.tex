@@ -1,0 +1,114 @@
+\documentclass{article}
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usepackage[plain]{algorithm}
+\usepackage{algpseudocode}
+
+\begin{document}
+\author{Chuan Lu}
+\title{BIOS:7600 Homework 6}
+\maketitle
+
+\medskip
+
+\begin{enumerate}
+
+\item Problem 4.2
+
+\begin{enumerate}
+
+\item 
+
+\begin{proof}
+By (4.3) in the book, since both $\beta_j, \beta_k > 0$,
+$$
+\begin{aligned}
+x_j^\top (y-X\hat\beta)/n - \lambda_2\hat\beta_j = \lambda_1, \\
+x_k^\top (y-X\hat\beta)/n - \lambda_2\hat\beta_k = \lambda_1.
+\end{aligned}
+$$
+Then
+$$
+(x_j - x_k)^\top (y-X\hat\beta)/n - \lambda_2(\hat\beta_j - \hat\beta_k) = 0,
+$$
+thus
+$$
+\beta_j - \beta_k = \frac{1}{n\lambda_2}(x_j - x_k)^\top r.
+$$
+
+\end{proof}
+
+\item
+\begin{proof}
+$$
+\begin{aligned}
+|\beta_j -\beta_k| &= \frac{1}{n\lambda_2} | (x_j -x_k)^\top r| \\
+&\le \frac{1}{n\lambda_2} \lVert (x_j-x_k)\rVert\cdot \lVert r\rVert \\
+&=\frac{1}{n\lambda_2}\sqrt{2n(1-\rho)}\lVert r\rVert.
+\end{aligned}
+$$
+Since $\hat\beta$ is the unique minimizer of the loss, so by substituting $\beta$ to 0,
+$$
+\lVert r\rVert \le \lVert y\rVert.
+$$
+Then we have shown the result.
+\end{proof}
+
+\end{enumerate}
+
+\item Problem 4.5
+
+The code for this problem is $\texttt{problem4.5.R}$.
+
+\begin{enumerate}
+
+\item Use elastic net with cross validation to fit the unfiltered data. The result of $R^2 $ and degree of freedom is shown in Table \ref{table1}.
+
+\begin{table}[]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+$\alpha$ & $\hat{R^2}$ & df  \\ \hline
+1       & 0.9726997                                   & 82  \\ \hline
+0.75    & 0.966037                                    & 80  \\ \hline
+0.5     & 0.9757089                                   & 108 \\ \hline
+0.25    & 0.9468617                                   & 116 \\ \hline
+\end{tabular}
+\label{table1}
+\caption{$R^2 $ and $df$ for different $\alpha$ for unfiltered data.}
+\end{table}
+
+\item The number of variables after filtering is 857. The result of using again elastic net with cross validation is shown in Table \ref{table2}.
+
+\begin{table}[]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+$\alpha$ & $\hat{R^2}$ & df  \\ \hline
+1       & 0.907334    & 46  \\ \hline
+0.75    & 0.9795399   & 94  \\ \hline
+0.5     & 0.97745     & 109 \\ \hline
+0.25    & 0.9684986   & 126 \\ \hline
+\end{tabular}
+\label{table2}
+\caption{$R^2 $ and $df$ for different $\alpha$ for filtered data.}
+\end{table}
+
+\item 
+\begin{enumerate}
+\item On $df$. By filtering out certain features, one can expect a decrease in the number of variable selected, especially when $\alpha$ is large, i.e., when including more Lasso penalty. However, this may exclude some important features from the regression model.
+
+\item On accuracy. If we filter by biological annotation, the predictive accuracy is almost the same with the unfiltered case. However, if we filter by variance, the accuracy is greatly less than the unfiltered version. Hence, when filtering before analysis, the accuracy may decrease, mainly because of the previous argument, i.e., some important features are excluded. 
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{enumerate}
+
+
+\end{document}
