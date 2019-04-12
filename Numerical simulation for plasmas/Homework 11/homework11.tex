@@ -21,55 +21,168 @@
 
 \begin{enumerate}
 
-\item The output is as follows.
+\item The order is as follows:
 
-Hello World! I am processor 4 of 16 processors.
+Hello World! I am thread 19 of 32 threads.
 
-Hello World! I am processor 8 of 16 processors.
+Hello World! I am thread 21 of 32 threads.
 
-Hello World! I am processor 9 of 16 processors.
+Hello World! I am thread 20 of 32 threads.
 
-Hello World! I am processor 10 of 16 processors.
+Hello World! I am thread 24 of 32 threads.
 
-Hello World! I am processor 11 of 16 processors.
+Hello World! I am thread 12 of 32 threads.
 
-Hello World! I am processor 12 of 16 processors.
+Hello World! I am thread 27 of 32 threads.
 
-Hello World! I am processor 13 of 16 processors.
+Hello World! I am thread 29 of 32 threads.
 
-Hello World! I am processor 15 of 16 processors.
+Hello World! I am thread 14 of 32 threads.
 
-Hello World! I am processor 0 of 16 processors.
+Hello World! I am thread 30 of 32 threads.
 
-Hello World! I am processor 1 of 16 processors.
+Hello World! I am thread 7 of 32 threads.
 
-Hello World! I am processor 3 of 16 processors.
+Hello World! I am thread 4 of 32 threads.
 
-Hello World! I am processor 5 of 16 processors.
+Hello World! I am thread 0 of 32 threads.
 
-Hello World! I am processor 6 of 16 processors.
+Hello World! I am thread 15 of 32 threads.
 
-Hello World! I am processor 7 of 16 processors.
+Hello World! I am thread 17 of 32 threads.
 
-Hello World! I am processor 14 of 16 processors.
+Hello World! I am thread 9 of 32 threads.
 
-Hello World! I am processor 2 of 16 processors.
+Hello World! I am thread 28 of 32 threads.
 
-\item My method is to use \texttt{MPI\_Barrier()} to block $(i+1)^{th}, \cdots, n^{th} $ processors until the $i^{th} $ processor has executed its code.
+Hello World! I am thread 3 of 32 threads.
+
+Hello World! I am thread 22 of 32 threads.
+
+Hello World! I am thread 8 of 32 threads.
+
+Hello World! I am thread 23 of 32 threads.
+
+Hello World! I am thread 6 of 32 threads.
+
+Hello World! I am thread 5 of 32 threads.
+
+Hello World! I am thread 2 of 32 threads.
+
+Hello World! I am thread 13 of 32 threads.
+
+Hello World! I am thread 1 of 32 threads.
+
+Hello World! I am thread 16 of 32 threads.
+
+Hello World! I am thread 31 of 32 threads.
+
+Hello World! I am thread 11 of 32 threads.
+
+Hello World! I am thread 18 of 32 threads.
+
+Hello World! I am thread 26 of 32 threads.
+
+Hello World! I am thread 10 of 32 threads.
+
+Hello World! I am thread 25 of 32 threads.
+
+real	0m0.011s
+
+user	0m0.137s
+
+sys	0m0.008s
+
+The output is not reproducible and not predictable since the order of thread are random.
+
+\item
+
+I set up a share variable \texttt{executed} to store the number of threads that have executed the output code. When \texttt{executed == thread\_id}, then the thread print the output. The output is:
+
+Hello World! I am thread 0 of 32 threads.
+
+Hello World! I am thread 1 of 32 threads.
+
+Hello World! I am thread 2 of 32 threads.
+
+Hello World! I am thread 3 of 32 threads.
+
+Hello World! I am thread 4 of 32 threads.
+
+Hello World! I am thread 5 of 32 threads.
+
+Hello World! I am thread 6 of 32 threads.
+
+Hello World! I am thread 7 of 32 threads.
+
+Hello World! I am thread 8 of 32 threads.
+
+Hello World! I am thread 9 of 32 threads.
+
+Hello World! I am thread 10 of 32 threads.
+
+Hello World! I am thread 11 of 32 threads.
+
+Hello World! I am thread 12 of 32 threads.
+
+Hello World! I am thread 13 of 32 threads.
+
+Hello World! I am thread 14 of 32 threads.
+
+Hello World! I am thread 15 of 32 threads.
+
+Hello World! I am thread 16 of 32 threads.
+
+Hello World! I am thread 17 of 32 threads.
+
+Hello World! I am thread 18 of 32 threads.
+
+Hello World! I am thread 19 of 32 threads.
+
+Hello World! I am thread 20 of 32 threads.
+
+Hello World! I am thread 21 of 32 threads.
+
+Hello World! I am thread 22 of 32 threads.
+
+Hello World! I am thread 23 of 32 threads.
+
+Hello World! I am thread 24 of 32 threads.
+
+Hello World! I am thread 25 of 32 threads.
+
+Hello World! I am thread 26 of 32 threads.
+
+Hello World! I am thread 27 of 32 threads.
+
+Hello World! I am thread 28 of 32 threads.
+
+Hello World! I am thread 29 of 32 threads.
+
+Hello World! I am thread 30 of 32 threads.
+
+Hello World! I am thread 31 of 32 threads.
+
+real	0m0.028s
+
+user	0m0.475s
+
+sys	0m0.004s
+
 
 \end{enumerate}
 
-\item Problem 2
+\item Computing $\pi$
 
-The plot is shown as follows. I excluded all initialization time in time calculation.
+The plot of run time vs. number of threads is shown in the following figure:
 
-\begin{figure}
+\begin{figure}[h]
 \centering
-\includegraphics[scale=0.8]{2c.png}
-\caption{Computation time vs. number of processors.}
-\label{1}
+\includegraphics[scale=0.6]{time.png}
+\caption{Run time vs. number of threads}
 \end{figure}
 
+The speedup is 15.85.
 
 \end{enumerate}
 
