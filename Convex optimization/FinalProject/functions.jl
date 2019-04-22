@@ -1,6 +1,3 @@
-module functions
-export relu, sigmoid, hinge, softmax, dhinge
-
 function relu(x)
 	return max.(x, 0);
 end
@@ -18,6 +15,10 @@ function softmax(x)
 end
 
 # subgradient
+function dsigmoid(x)
+	return exp.(x) ./ (1 .+ exp.(x)).^2
+end
+
 function dhinge(x)
 	if x > 0
 		return 0 .* x;	# 0
@@ -28,4 +29,6 @@ function dhinge(x)
 	end
 end
 
-end # module
+function dsoftmax(x)
+	return -exp.(-x) ./(1 .+ exp.(-x));
+end
