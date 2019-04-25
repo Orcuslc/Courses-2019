@@ -1,0 +1,126 @@
+\documentclass{article}
+\usepackage[a4paper,margin=1cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usepackage[plain]{algorithm}
+\usepackage{algpseudocode}
+
+\begin{document}
+\author{Chuan Lu}
+\title{BIOS:7600 Homework 7}
+\maketitle
+
+\medskip
+
+\begin{enumerate}
+
+\item Problem 5.1, Gaussian tail bound.
+
+\begin{proof}
+First, for any $t > 0$,
+\begin{equation}
+\begin{aligned}
+\mathbb{P}(Z \ge \lambda) &\le \exp(-t\lambda)\mathbb{E}(e^{tZ}) = \frac{e^{-t\lambda}}{\sqrt{2\pi(\sigma^2/n)}}\int_{-\infty}^{\infty}e^{tz}e^{-\frac{z^2}{2\sigma^2/n}} dz \\
+&= \frac{e^{-t\lambda}}{\sqrt{2\pi(\sigma^2/n)}}\int_{-\infty}^{\infty}\exp(-\frac{(z-\frac{\sigma^2}{n}t)^2}{2\sigma^2/n})\exp(\frac{\sigma^2 t^2}{2n})dz\\ 
+&=\exp(-t\lambda + \frac{\sigma^2t^2}{2n}).
+\end{aligned}
+\end{equation}
+Let
+\begin{equation}
+t = \frac{n\lambda}{\sigma} > 0,
+\end{equation}
+then the inequality becomes
+\begin{equation}
+\mathbb{P}(Z \ge \lambda) \le \exp(-\frac{n\lambda^2}{2\sigma^2}).
+\end{equation}
+By symmetry, 
+\begin{equation}
+\mathbb{P}(Z \le -\lambda) \le \exp(-\frac{n\lambda^2}{2\sigma^2}).
+\end{equation}
+Hence we get the result.
+\end{proof}
+
+\item Problem 5.3, Prediction bound under RE condition.
+
+\begin{enumerate}
+\item 
+\begin{proof}
+First, as proved in class, we have
+\begin{equation}
+\frac{1}{n}\lVert X\delta \rVert_2^2\le 3\lambda \sqrt{|\mathcal{S}|}\lVert \delta_S\rVert_2.
+\end{equation}
+
+By the restricted eigenvalue condition, we have 
+\begin{equation}
+\frac{1}{n}\delta^\top X^\top X\delta \ge \tau\lVert \delta\rVert_2^2\ge \tau\lVert \delta_S\rVert_2^2,
+\end{equation}
+so
+\begin{equation}
+\frac{1}{n}\lVert X\delta \rVert_2^2\le 3\lambda\sqrt{|\mathcal{S}|}\frac{1}{\sqrt{n\tau}}\lVert X\delta\rVert_2.
+\end{equation}
+Hence,
+\begin{equation}
+\frac{1}{n}\lVert X\delta \rVert_2^2 \le \frac{9}{\tau}\lambda^2|\mathcal{S}|.
+\end{equation}
+\end{proof}
+
+\item 
+\begin{proof}
+Actually, by using the same equality in the last problem, we can get this result quickly.
+\end{proof}
+\end{enumerate}
+
+\item Problem 6.1, Conditional distribution for random knockoffs.
+
+\begin{proof}
+By the conditional distributions of multivariate normal distribution,
+\begin{equation}
+(\tilde{x_i}\mid x_i = x) \sim N(((\Sigma-S)\Sigma^{-1}x)_i, (\Sigma-(\Sigma-S)\Sigma^{-1}(\Sigma-S))_{ii}) \sim N((x-S\sigma^{-1}x)_i, (2S-S\Sigma^{-1}S)_{ii}).
+\end{equation}
+\end{proof}
+
+\item Problem 6.2, Selective inference in the p=2 case.
+\begin{proof}
+The condition becomes
+\begin{equation}
+|\frac{1}{n}x_2^\top (1-P_1)y + \lambda x_2^\top x_1(x_1^\top x_1)^{-1}| \le \lambda.
+\end{equation}
+By simplification,
+\begin{equation}
+-\lambda n(x_1^\top x_1 - x_2^\top x_1)\le (x_1^\top x_1x_2^\top - x_2^\top x_1x_1^\top)y \le \lambda n(x_1^\top x_1 - x_2^\top x_1).
+\end{equation}
+Then
+\begin{equation}
+A = \left[
+\begin{aligned}
+&x_1^\top x_1x_2^\top-x_2^\top x_1x_1^\top &0 \\
+&0 &x_2^\top x_1x_1^\top - x_1^\top x_1x_2^\top,
+\end{aligned}
+\right],
+\quad
+b = \lambda n\left[
+\begin{aligned}
+&x_1^\top x_1 -x_2^\top x_1\\
+&x_1^\top x_1 - x_2^\top x_1
+\end{aligned}
+\right]
+,
+\end{equation}
+where 
+$X = [x_1, x_2]$.
+
+\end{proof}
+
+\item Problem 6.3,  HIV drug resistance study.
+\begin{enumerate}
+\item 
+
+
+\end{enumerate}
+\end{enumerate}
+
+\end{document}
