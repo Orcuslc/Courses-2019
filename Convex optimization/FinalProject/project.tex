@@ -16,6 +16,8 @@
 \newcommand{\bv}{{\mathbf v}}
 \newcommand{\bu}{{\mathbf u}}
 
+\newcommand{\ml}{\mathcal{L}}
+
 \numberwithin{equation}{section}
 \numberwithin{figure}{section}
 
@@ -124,5 +126,44 @@ By chain rule, the subgradients of $f$ with respect to each variable are
 \end{aligned}
 \end{equation}
 
+The stochastic subgradients can be chosen to be the subgradient when input is a minibatch of the whole dataset, i.e.
+\begin{equation}
+G(x, \xi_i) = \partial_x(x; A_{\xi_i}, b_{\xi_i})
+\end{equation}
+for each variable $x$, where $\xi_i $ is a uniformly sample index set for each $i$.
+
+\section{Accelerated proximal gradient method}
+
+In order to use APG for this problem, we need to choose 
+\begin{equation}
+\sigma(z) = \frac{\exp(z)}{1+\exp(z)}, \quad \mathcal{L}(z) = \log(1+\exp(-z))
+\end{equation}
+to guarantee the objective function is smooth. Notice
+\begin{equation}
+\mathcal{L}'(z) = -\frac{1}{1+\exp(z)}, 
+\end{equation}
+and
+\begin{equation}
+|\ml''(z)| = \left|\frac{e^z}{(1+e^z)^2}\right| \le \frac{1}{4},
+\end{equation}
+by Lagrange mean value theorem, we know the Lipschitz constant for $\ml'$ is $L=\frac{1}{4}$.
+
+Now let's consider the Lipschitz constant for each derivatives. For $\partial_{A_2} $,
+\begin{equation}
+\begin{aligned}
+\lVert \partial_{A_2}
+\end{aligned}
+\end{equation}
+
+
+For $\frac{\partial f}{\partial w}$,
+\begin{equation}
+\begin{aligned}
+|\partial_w (w_1) - \partial_w (w_2)| &= \frac{1}{n}\sum_{i=1}^{n}b_i(\ml'(b_i(\sigma(A_1)Z)_i + b_i w_1) - \ml' (b_i(\sigma(A_1)Z)_i + b_i w_2) \\
+&\le \frac{1}{n}\sum_{i=1}^{n}b_i(\frac{1}{4}b_i|w_1-w_2|) = \frac{1}{4n}\sum_{i=1}^{n}|w_1-w_2| \\
+&= \frac{1}{4}|w_1-w_2|.
+\end{aligned}
+\end{equation}
+Then the Lipschitz constant for $\partial_w $ is $L_w = \frac{1}{4} $.
 
 \end{document}

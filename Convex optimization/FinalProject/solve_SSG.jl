@@ -30,7 +30,9 @@ K = 100;
 # stepsize
 C = 1.0;
 
-# random initialize of parameters
+# random initialize of parameters)
+using Random
+Random.seed!(12345);
 H = 128;
 x, y, z, w = initialize([size(A, 2), H, size(b, 2)]);
 
@@ -43,6 +45,11 @@ xsum = x; ysum = y; zsum = z; wsum = w;
 
 # derivative path
 dxpath = Any[]; dypath = Any[]; dzpath = Any[]; dwpath = Any[];
+
+# first run
+f, _, _ = forward(A, b, x, y, z, w, sigma, l);
+push!(fpath, f);
+println(f)
 
 for i = 1:K
 
@@ -73,10 +80,10 @@ for i = 1:K
 	wsum += w;
 
 	# save new result
-	push!(xpath, x./(i+1));
-	push!(ypath, y./(i+1));
-	push!(zpath, z./(i+1));
-	push!(wpath, w./(i+1));
+	push!(xpath, xsum./(i+1));
+	push!(ypath, ysum./(i+1));
+	push!(zpath, zsum./(i+1));
+	push!(wpath, wsum./(i+1));
 
 	# compute the target
 	f, _, _ = forward(A, b, xpath[end], ypath[end], zpath[end], wpath[end], sigma, l);

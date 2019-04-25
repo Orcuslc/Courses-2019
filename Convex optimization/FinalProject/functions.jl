@@ -30,5 +30,5 @@ function dhinge(x)
 end
 
 function dsoftmax(x)
-	return -exp.(-x) ./(1 .+ exp.(-x));
+	return -1 ./(exp.(x) .+ 1);
 end
