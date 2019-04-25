@@ -1,0 +1,11 @@
+#$ -q UI
+#$ -l h_rt=00:10:00
+#$ -pe smp 32
+#$ -N hw11
+#$ -o hw11.log
+#$ -j y
+#$ -V
+#$ -cwd
+
+export OMP_NUM_THREADS=32 
+time ./a.out
