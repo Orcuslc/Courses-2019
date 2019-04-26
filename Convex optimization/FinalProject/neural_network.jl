@@ -27,7 +27,7 @@ function forward(A, b, x, y, z, w, sigma, l)
 	A1 = A*x .+ y';
 	A2 = sigma.(A1)*z .+ w;
 	f = sum(l.(b .* A2), dims = 1)/size(b, 1);
-	return f, A1, A2;
+	return f[1], A1, A2;
 end
 
 function backward(f, A1, A2, A, b, x, y, z, w, sigma, l, dsigma, dl)

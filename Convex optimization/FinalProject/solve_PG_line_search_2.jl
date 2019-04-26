@@ -1,0 +1,214 @@
+# include source code
+include("neural_network.jl")
+include("functions.jl")
+
+# load data
+using MAT
+data = matread("../datasets/rcv1.binary/rcv1.mat");
+A = data["A"];
+b = data["b"];
+
+# proximal mapping; since the feasible set is R^n, it is just thd identity mapping
+prox_x = (x, eta) -> x;
+prox_y = (x, eta) -> x;
+prox_z = (x, eta) -> x;
+prox_w = (x, eta) -> x;
+
+# parameters
+sigma = sigmoid;
+l = softmax;
+dsigma = dsigmoid;
+dl = dsoftmax;
+
+# number of iterations
+K = 100;
+
+# random initialize of parameters
+using Random
+Random.seed!(12345);
+H = 128;
+x, y, z, w = initialize([size(A, 2), H, size(b, 2)]);
+
+# solution path
+xpath = Any[]; ypath = Any[]; zpath = Any[]; wpath = Any[]; fpath = Any[];
+push!(xpath, x); push!(ypath, y); push!(zpath, z);push!(wpath, w);
+
+# sum of solutions
+xsum = x; ysum = y; zsum = z; wsum = w;
+
+# derivative path
+dxpath = Any[]; dypath = Any[]; dzpath = Any[]; dwpath = Any[];
+
+# step size
+x_eta = 4.0;
+x_gamma_dec = 0.5;
+x_gamma_inc = 0.5;
+y_eta = 4.0;
+y_gamma_dec = 0.5;
+y_gamma_inc = 0.5;
+z_eta = 4.0;
+z_gamma_dec = 0.5;
+z_gamma_inc = 0.5;
+w_eta = 4.0;
+w_gamma_dec = 0.5;
+w_gamma_inc = 0.5;
+
+# first run
+f, _, _ = forward(A, b, x, y, z, w, sigma, l);
+push!(fpath, f);
+println(f)
+
+for i = 1:K
+
+	# using global variables in the local scope
+	global x, y, z, w;
+	global dx, dy, dz, dw;
+	global xsum, ysum, zsum, wsum;	
+	global x_eta, y_eta, z_eta, w_eta, x_gamma_dec, x_gamma_inc, y_gamma_inc, y_gamma_dec, z_gamma_inc, z_gamma_dec, w_gamma_inc, w_gamma_dec;
+
+	# increase step size
+	x_eta /= x_gamma_inc;
+	y_eta /= y_gamma_inc;
+	z_eta /= z_gamma_inc;
+	w_eta /= w_gamma_inc;
+
+	# forward pass
+	f, A1, A2 = forward(A, b, x, y, z, w, sigma, l);
+
+	# backward pass
+	dx, dy, dz, dw = backward(f, A1, A2, A, b, x, y, z, w, sigma, l, dsigma, dl);
+
+	# update x
+	while true
+		# set as global variable
+		global x1;
+
+		# decrease step size
+		x_eta *= x_gamma_dec;
+
+		# next step
+		x1 = prox_x(x .- x_eta*dx, x_eta);
+
+		# stop criterion, for x, regard it as a vector instead of a matrix
+		f1, _, _ = forward(A, b, x1, y, z, w, sigma, l);
+		x_vec = reshape(x, length(x));
+		x1_vec = reshape(x1, length(x1));
+		dx_vec = reshape(dx, length(dx));
+
+		if f1 - f <= dx_vec' * (x1_vec - x_vec) + 1/(2*x_eta)*sum((x1_vec - x_vec).^2)
+			break;
+		end
+	end
+
+	# update x
+	x = x1;
+
+	# update objective and derivative
+	# forward pass
+	f, A1, A2 = forward(A, b, x, y, z, w, sigma, l);
+
+	# backward pass
+	dx, dy, dz, dw = backward(f, A1, A2, A, b, x, y, z, w, sigma, l, dsigma, dl);
+
+	# update y
+	while true
+		# set as global variable
+		global y1;
+
+		# decrease step size
+		y_eta *= y_gamma_dec;
+
+		# next step
+		y1 = prox_y(y .- y_eta*dy, y_eta);
+
+		# stop criterion
+		f1, _, _ = forward(A, b, x, y1, z, w, sigma, l);
+	    if f1 - f <= (dy' * (y1 - y))[1] + 1/(2*y_eta)*sum((y1 - y).^2)
+	    	break;
+	    end
+	end
+
+	# update y
+	y = y1;
+
+	# update objective and derivative
+	# forward pass
+	f, A1, A2 = forward(A, b, x, y, z, w, sigma, l);
+
+	# backward pass
+	dx, dy, dz, dw = backward(f, A1, A2, A, b, x, y, z, w, sigma, l, dsigma, dl);
+
+	# update z
+	while true
+		# set as global variable
+		global z1;
+
+		# decrease step size
+		z_eta *= z_gamma_dec;
+
+		# next step
+		z1 = prox_z(z .- z_eta*dz, z_eta);
+
+		# stop criterion
+		f1, _, _ = forward(A, b, x, y, z1, w, sigma, l);
+		if f1 - f <= (dz' * (z1 - z))[1] + 1/(2*z_eta)*sum((z1 - z).^2)
+			break;
+		end
+	end
+
+	# update z
+	z = z1;
+
+	# update objective and derivative
+	# forward pass
+	f, A1, A2 = forward(A, b, x, y, z, w, sigma, l);
+
+	# backward pass
+	dx, dy, dz, dw = backward(f, A1, A2, A, b, x, y, z, w, sigma, l, dsigma, dl);
+
+	# update w
+	while true
+		# set as global variable
+		global w1;
+
+		# decrease step size
+		w_eta *= w_gamma_dec;
+
+		# next step
+		w1 = prox_w(w .- w_eta*dw, w_eta);
+
+		# stop criterion
+		f1, _, _ = forward(A, b, x, y, z, w1, sigma, l);
+		if f1 - f <= (dw' * (w1 - w))[1] + 1/(2*w_eta)*sum((w1 - w).^2)
+			break
+		end
+	end
+
+	# update w
+	w = w1;
+
+	# update objective and derivative
+	# forward pass
+	f, A1, A2 = forward(A, b, x, y, z, w, sigma, l);
+
+	# backward pass
+	dx, dy, dz, dw = backward(f, A1, A2, A, b, x, y, z, w, sigma, l, dsigma, dl);
+
+	# compute the average
+	xsum += x1;
+	ysum += y1;
+	zsum += z1;
+	wsum += w1;
+
+	# save new result
+	push!(xpath, xsum./(i+1));
+	push!(ypath, ysum./(i+1));
+	push!(zpath, zsum./(i+1));
+	push!(wpath, wsum./(i+1));
+
+	# compute the target
+	f, _, _ = forward(A, b, xpath[end], ypath[end], zpath[end], wpath[end], sigma, l);
+	push!(fpath, f);
+	println(i);
+	println(f);
+end

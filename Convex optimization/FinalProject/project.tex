@@ -128,9 +128,20 @@ By chain rule, the subgradients of $f$ with respect to each variable are
 
 The stochastic subgradients can be chosen to be the subgradient when input is a minibatch of the whole dataset, i.e.
 \begin{equation}
-G(x, \xi_i) = \partial_x(x; A_{\xi_i}, b_{\xi_i})
+G(x, \xi_i) = \partial_x f(x; A_{\xi_i}, b_{\xi_i})
 \end{equation}
-for each variable $x$, where $\xi_i $ is a uniformly sample index set for each $i$.
+for each variable $x$, where $\xi_i $ is a uniformly sample index set for each $i$. We can control the size of each $\xi_i $ to vary from online learning to full-batch learning.
+
+\section{Proximal Gradient method with line search}
+In order to use APG for this problem, we need to choose 
+\begin{equation}
+\sigma(z) = \frac{\exp(z)}{1+\exp(z)}, \quad \mathcal{L}(z) = \log(1+\exp(-z))
+\end{equation}
+to guarantee the objective function is smooth.
+\begin{remark}
+For the stop criterion of line search: We try two different methods. 1. After updating $x_1 $ by $x_0 $, we still use $x_0 $ to compute the derivative with respect to $y, z, w$. Similarly, we still use $x_0, y_0 $ instead of the updated $x_1, y_1 $ to compute the derivative of $z, w$, and etc. 2. Use the u[]
+\end{remark}
+
 
 \section{Accelerated proximal gradient method}
 
@@ -165,5 +176,6 @@ For $\frac{\partial f}{\partial w}$,
 \end{aligned}
 \end{equation}
 Then the Lipschitz constant for $\partial_w $ is $L_w = \frac{1}{4} $.
+
 
 \end{document}
