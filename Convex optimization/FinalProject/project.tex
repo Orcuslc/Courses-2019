@@ -132,16 +132,6 @@ G(x, \xi_i) = \partial_x f(x; A_{\xi_i}, b_{\xi_i})
 \end{equation}
 for each variable $x$, where $\xi_i $ is a uniformly sample index set for each $i$. We can control the size of each $\xi_i $ to vary from online learning to full-batch learning.
 
-\section{Proximal Gradient method with line search}
-In order to use APG for this problem, we need to choose 
-\begin{equation}
-\sigma(z) = \frac{\exp(z)}{1+\exp(z)}, \quad \mathcal{L}(z) = \log(1+\exp(-z))
-\end{equation}
-to guarantee the objective function is smooth.
-\begin{remark}
-For the stop criterion of line search: We try two different methods. 1. After updating $x_1 $ by $x_0 $, we still use $x_0 $ to compute the derivative with respect to $y, z, w$. Similarly, we still use $x_0, y_0 $ instead of the updated $x_1, y_1 $ to compute the derivative of $z, w$, and etc. 2. Use the u[]
-\end{remark}
-
 
 \section{Accelerated proximal gradient method}
 
@@ -159,23 +149,91 @@ and
 \end{equation}
 by Lagrange mean value theorem, we know the Lipschitz constant for $\ml'$ is $L=\frac{1}{4}$.
 
-Now let's consider the Lipschitz constant for each derivatives. For $\partial_{A_2} $,
+Now let's consider the Lipschitz constant for each derivatives. 
+
+For $\partial_{A_2} $,
+% \begin{equation}
+% \begin{aligned}
+% \lVert \partial^2_{A_2}\rVert_2^2 = \left\lVert \frac{1}{n}\mathcal{L}''(b\odot A_2)\odot b\odot b\right\rVert_2^2 \le \left\lVert \left(\frac{1}{4n}, \hdots, \frac{1}{4n}\right)^\top\right\rVert_2^2 \le \frac{1}{16n}.
+%  \end{aligned}
+% \end{equation}
 \begin{equation}
 \begin{aligned}
-\lVert \partial_{A_2}
+\left|\frac{\partial f}{\partial A_2^1} - \frac{\partial f}{\partial A_2^2}\right| &= \frac{1}{n}|\mathcal{L}'(b\odot A_2^1)\odot b - \mathcal{L}'(b\odot A_2^2)\odot b| = \frac{1}{n}|(\mathcal{L}'(b\odot A_2^1) - \mathcal{L}'(b\odot A_2^2))\odot b| \\
+&= \frac{1}{n} |\ml''(\xi)(b\odot(A_2^1 - A_2^2))\odot b| \\
+&\le \frac{1}{4n}|A_2^1 - A_2^2|.
 \end{aligned}
 \end{equation}
+Then the Lipschitz constant for $\frac{\partial f}{\partial A_2} $ is $L_{A_2} = \frac{1}{4n} $.
 
 
+% For $\frac{\partial f}{\partial w}$,
+% \begin{equation}
+% \begin{aligned}
+% |\partial_w (w_1) - \partial_w (w_2)| &= \frac{1}{n}\sum_{i=1}^{n}b_i(\ml'(b_i(\sigma(A_1)Z)_i + b_i w_1) - \ml' (b_i(\sigma(A_1)Z)_i + b_i w_2) \\
+% &\le \frac{1}{n}\sum_{i=1}^{n}b_i(\frac{1}{4}b_i|w_1-w_2|) = \frac{1}{4n}\sum_{i=1}^{n}|w_1-w_2| \\
+% &= \frac{1}{4}|w_1-w_2|.
+% \end{aligned}
+% \end{equation}
 For $\frac{\partial f}{\partial w}$,
 \begin{equation}
 \begin{aligned}
-|\partial_w (w_1) - \partial_w (w_2)| &= \frac{1}{n}\sum_{i=1}^{n}b_i(\ml'(b_i(\sigma(A_1)Z)_i + b_i w_1) - \ml' (b_i(\sigma(A_1)Z)_i + b_i w_2) \\
-&\le \frac{1}{n}\sum_{i=1}^{n}b_i(\frac{1}{4}b_i|w_1-w_2|) = \frac{1}{4n}\sum_{i=1}^{n}|w_1-w_2| \\
-&= \frac{1}{4}|w_1-w_2|.
+\left|\frac{\partial f}{\partial w^1} - \frac{\partial f}{\partial w^2}\right| &= \left(\frac{\partial f}{\partial A_2^1} - \frac{\partial f}{\partial A_2^2}\right)^\top 1 \\
+&\le \frac{1}{4n}|w_1 - w_2|n = \frac{1}{4}|w_1 - w_2|.
 \end{aligned}
 \end{equation}
 Then the Lipschitz constant for $\partial_w $ is $L_w = \frac{1}{4} $.
+
+For $\frac{\partial f}{\partial Z}$, we first notice $\sigma(x) \in (0, 1)$. Then 
+\begin{equation}
+\begin{aligned}
+\left|\frac{\partial f}{\partial Z^1} - \frac{\partial f}{\partial Z^2}\right| &= \left| \sigma(A_1)^\top \left(\frac{\partial f}{\partial A_2^1}-\frac{\partial f}{\partial A_2^2}\right)\right|\le \frac{1}{4}\left| \sigma(A_1)^\top (A_2^1 - A_2^2)\right| \\
+&= \frac{1}{4}|\sigma(A_1)^\top \sigma(A_1)(Z_1-Z_2)| \\
+&\le \frac{1}{4}\lVert \sigma(A_1)^\top\sigma(A_1)\rVert_2 |Z_1-Z_2| \\
+&\le \frac{1}{4}\lVert \sigma(A_1)^\top\sigma(A_1)\rVert_F |Z_1-Z_2| \\
+&\le \frac{1}{4}\sqrt{k^2 n^4}|Z_1-Z_2| = \frac{1}{4}kn^2|Z_1-Z_2|.
+\end{aligned}
+\end{equation}
+Then $L_z = \frac{1}{4}kn^2 $ can be an upper bound for the Lipschitz constant for $\partial_z $.
+
+% For $\frac{\partial f}{\partial A_1}$, 
+% \begin{equation}
+% \begin{aligned}
+% \left|\frac{\partial f}{\partial A_1^1} - \frac{\partial f}{\partial A_1^2}\right| = \frac{\partial f}{\partial A_2}
+% \end{aligned}
+% \end{equation}
+
+The lipschitz constant for $\frac{\partial f}{\partial y}$ and $\frac{\partial f}{\partial x}$ are too complex to solve. 
+
+\section{Proximal Gradient method with line search}
+In order to use PG for this problem, we need to choose 
+\begin{equation}
+\sigma(z) = \frac{\exp(z)}{1+\exp(z)}, \quad \mathcal{L}(z) = \log(1+\exp(-z))
+\end{equation}
+to guarantee the objective function is smooth.
+
+Since we use an iterative way to update the variables, the value of $x$ will be updated from $x_0 $ to $x_1 $ before we start to update $y, z, w$. So there are two schemes in updating:
+\begin{enumerate}
+\item Use $x_0 $ to update $y$, and use $x_0, y_0 $ to update $z$, and use $x_0, y_0, z_0 $ to update $w$.
+\item Use $x_1 $ to update $y$. In this case, we need to recompute the objective function and the derivatives using $ x_1 $. For $y, z, w$, we also use this scheme.
+\end{enumerate}
+We test both schemes in the experiments.
+
+\section{Experiments}
+For the experiments, we test the one-hidden-layer neural network on the datasets \texttt{rcv1.binary} and \texttt{covtype} from libsvm library. We use the same random seed across the experiments to get the same random initialization for a fair comparison. For all following experiments, we compute the objective value, subgradient and out-of-sample accuracy on the averaged variable after each iteration.
+
+We compute the prediction accuracy by
+\begin{equation}
+Acc = \frac{1}{n}\sum_{i=1}^{n} 1_{\text{sign}(A_{2i}) = \text{sign}(b_i)} \times 100\%.
+\end{equation}
+
+We compute 2-norm of $\partial x$ by first flatten it to a vector, and then compute the vector 2-norm instead of matrix 2-norm. 
+
+\subsection{rcv1.binary}
+For \texttt{rcv1.binary}, we use only the \texttt{rcv1\_train.binary} from libsvm library. We randomly sample $20\%$ of the dataset, i.e., 4048 samples to form the test set, and use the rest part as the training set. 
+
+For memory issues (i.e., since we need to keep track of each variables and their derivatives), for PG and APG, we run the algorithm with $K = 200$ iterations and only keep track of the results from $2^{nd}, 4^{nd}, \hdots, 200^{th} $ iterations. For SSG, we run $K = 1200$ iterations with minibatch size $N = 2699$ in each iteration, and only keep track of the results from $12^{th}, 24^{th}, \hdots, 1200^{th} $ iterations. Then the total number of training samples for all three algorithms are the same.
+
 
 
 \end{document}

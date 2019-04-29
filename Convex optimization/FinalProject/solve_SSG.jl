@@ -4,9 +4,11 @@ include("functions.jl")
 
 # load data
 using MAT
-data = matread("../datasets/rcv1.binary/rcv1.mat");
-A = data["A"];
-b = data["b"];
+data = matread("../datasets/rcv1.binary/rcv1_sep.mat");
+A = data["A_train"];
+b = data["b_train"];
+A_test = data["A_test"];
+b_test = data["b_test"];
 
 # proximal mapping; since the feasible set is R^n, it is just thd identity mapping
 proj_x = x -> x;
@@ -15,7 +17,7 @@ proj_z = x -> x;
 proj_w = x -> x;
 
 # sample xi
-batchsize = 100;
+batchsize = 2699;
 sample_xi = () -> rand(1:size(A, 1), (batchsize, 1))[:, 1];
 
 # parameters
@@ -25,7 +27,7 @@ dsigma = dsigmoid;
 dl = dsoftmax;
 
 # number of iterations
-K = 100;
+K = 1200;
 
 # stepsize
 C = 1.0;
@@ -37,19 +39,27 @@ H = 128;
 x, y, z, w = initialize([size(A, 2), H, size(b, 2)]);
 
 # solution path
-xpath = Any[]; ypath = Any[]; zpath = Any[]; wpath = Any[]; fpath = Any[];
-push!(xpath, x); push!(ypath, y); push!(zpath, z);push!(wpath, w);
+xpath = x; ypath = y; zpath = z; wpath = w;
 
 # sum of solutions
 xsum = x; ysum = y; zsum = z; wsum = w;
 
 # derivative path
-dxpath = Any[]; dypath = Any[]; dzpath = Any[]; dwpath = Any[];
+dxpath = zeros(size(x)); dypath = zeros(size(y)); dzpath = zeros(size(z)); dwpath = zeros(size(w));
+
+# objective and prediction accuracy path
+fpath = zeros(1, 1);
+accpath = zeros(1, 1);
 
 # first run
 f, _, _ = forward(A, b, x, y, z, w, sigma, l);
-push!(fpath, f);
-println(f)
+output = predict(A_test, x, y, z, w, sigma);
+acc = accuracy(output, b_test);
+
+fpath[1, 1] = f;
+accpath[1, 1] = acc;
+println(f);
+println(acc);
 
 for i = 1:K
 
@@ -60,6 +70,7 @@ for i = 1:K
 	global x, y, z, w;
 	global dx, dy, dz, dw;
 	global xsum, ysum, zsum, wsum;
+	global xpath, ypath, zpath, wpath, dxpath, dypath, dzpath, dwpath, fpath, accpath;	
 	
 	# forward pass
 	f, A1, A2 = forward(A[index, :], b[index, :], x, y, z, w, sigma, l);
@@ -79,15 +90,45 @@ for i = 1:K
 	zsum += z;
 	wsum += w;
 
-	# save new result
-	push!(xpath, xsum./(i+1));
-	push!(ypath, ysum./(i+1));
-	push!(zpath, zsum./(i+1));
-	push!(wpath, wsum./(i+1));
+	# keep track of results from 12i iterations
+	if i % 12 == 0
+		# save new result
+		xpath = cat(xpath, xsum./(i+1), dims = 3);
+		ypath = cat(ypath, ysum./(i+1), dims = 3);
+		zpath = cat(zpath, zsum./(i+1), dims = 3);
+		wpath = cat(wpath, wsum./(i+1), dims = 3);
 
-	# compute the target
-	f, _, _ = forward(A, b, xpath[end], ypath[end], zpath[end], wpath[end], sigma, l);
-	push!(fpath, f);
-	println(i);
-	println(f);
+		# compute the objective value
+		f, A1, A2 = forward(A, b, xpath[:, :, end], ypath[:, :, end], zpath[:, :, end], wpath[:, :, end], sigma, l);
+		fpath = vcat(fpath, f);
+		
+		# compute the subgradient
+		dx, dy, dz, dw = backward(f, A1, A2, A, b, xpath[:, :, end], ypath[:, :, end], zpath[:, :, end], wpath[:, :, end], sigma, l, dsigma, dl);
+		dxpath = cat(dxpath, dx, dims = 3);
+		dypath = cat(dypath, dy, dims = 3);
+		dzpath = cat(dzpath, dz, dims = 3);
+		dwpath = cat(dwpath, dw, dims = 3);
+
+		# compute out-of-sample accuracy
+		output = predict(A_test, xpath[:, :, end], ypath[:, :, end], zpath[:, :, end], wpath[:, :, end], sigma);
+		acc = accuracy(output, b_test);
+		accpath = vcat(accpath, acc);
+
+		println(i);
+		println(f);
+		println(acc);
+	end
 end
+
+# save all variables to file
+using HDF5
+h5write("./results/SSG.h5", "variables/x", xpath);
+h5write("./results/SSG.h5", "variables/y", ypath);
+h5write("./results/SSG.h5", "variables/z", zpath);
+h5write("./results/SSG.h5", "variables/w", wpath);
+h5write("./results/SSG.h5", "results/objective", fpath);
+h5write("./results/SSG.h5", "results/dx", dxpath);
+h5write("./results/SSG.h5", "results/dy", dypath);
+h5write("./results/SSG.h5", "results/dz", dzpath);
+h5write("./results/SSG.h5", "results/dw", dwpath);
+h5write("./results/SSG.h5", "results/accuracy", accpath);

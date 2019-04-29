@@ -23,7 +23,7 @@ function forward(A, b, x, y, z, w, sigma, l)
 	# z: wieght for the second layer
 	# w: bias for the second layer
 	# sigma: activation function, relu or sigmoid
-	# l: output function, hinge or softmax
+	# l: loss function, hinge or softmax
 	A1 = A*x .+ y';
 	A2 = sigma.(A1)*z .+ w;
 	f = sum(l.(b .* A2), dims = 1)/size(b, 1);
@@ -56,6 +56,28 @@ function backward(f, A1, A2, A, b, x, y, z, w, sigma, l, dsigma, dl)
 	dx = A'*dA1;
 	return dx, dy, dz, dw;
 end
+
+function predict(A, x, y, z, w, sigma)
+	# prediction of two-layer neural network
+	# A: data matrix
+	# x: weight for the first layer
+	# y: bias for the first layer
+	# z: wieght for the second layer
+	# w: bias for the second layer
+	# sigma: activation function, relu or sigmoid
+	A1 = A*x .+ y';
+	A2 = sigma.(A1)*z .+ w;
+	return A2;
+end
+
+function accuracy(b_pred, b_true)
+	#=
+		compute prediction accuracy
+		defined at (5.1)
+	=#
+	return 100*sum(b_pred .* b_true .> 0)/size(b_pred, 1);
+end
+
 
 # function compute_R(A, x, y)
 # 	#=
