@@ -3,6 +3,8 @@ import h5py
 import numpy as np
 import sys
 
+save_path = "rc1.binary"
+
 objectives = {}
 accuracies = {}
 dxs = {}
@@ -53,7 +55,7 @@ plt.legend(lines, methods)
 plt.grid(True)
 plt.xlabel("Iterations")
 plt.ylabel("Objective")
-plt.savefig("plots/rc1.binary/objective.jpg")
+plt.savefig("plots/{0}/objective.jpg".format(save_path))
 
 # plot accuracy
 plt.figure(1)
@@ -65,7 +67,7 @@ plt.legend(lines, methods)
 plt.grid(True)
 plt.xlabel("Iterations")
 plt.ylabel("Accuracy (%)")
-plt.savefig("plots/rc1.binary/accuracy.jpg")
+plt.savefig("plots/{0}/accuracy.jpg".format(save_path))
 
 # plot subgradients
 plt.figure(2)
@@ -77,7 +79,7 @@ plt.legend(lines, methods)
 plt.grid(True)
 plt.xlabel("Iterations")
 plt.ylabel(r'$\Vert \partial_x\Vert_2 $', fontsize = 14)
-plt.savefig("plots/rc1.binary/dx.jpg")
+plt.savefig("plots/{0}/dx.jpg".format(save_path))
 
 plt.figure(3)
 lines = []
@@ -88,7 +90,7 @@ plt.legend(lines, methods)
 plt.grid(True)
 plt.xlabel("Iterations")
 plt.ylabel(r"$\Vert \partial_y\Vert_2 $")
-plt.savefig("plots/rc1.binary/dy.jpg")
+plt.savefig("plots/{0}/dy.jpg".format(save_path))
 
 plt.figure(4)
 lines = []
@@ -99,7 +101,7 @@ plt.legend(lines, methods)
 plt.grid(True)
 plt.xlabel("Iterations")
 plt.ylabel(r"$\Vert \partial_z\Vert_2 $")
-plt.savefig("plots/rc1.binary/dz.jpg")
+plt.savefig("plots/{0}/dz.jpg".format(save_path))
 
 
 plt.figure(5)
@@ -111,7 +113,7 @@ plt.legend(lines, methods)
 plt.grid(True)
 plt.xlabel("Iterations")
 plt.ylabel(r"$\Vert \partial_w\Vert_2 $")
-plt.savefig("plots/rc1.binary/dw.jpg")
+plt.savefig("plots/{0}/dw.jpg".format(save_path))
 
 
 plt.show()

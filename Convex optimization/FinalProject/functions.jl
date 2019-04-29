@@ -3,7 +3,7 @@ function relu(x)
 end
 
 function sigmoid(x) 
-	return exp.(x)./(1 .+ exp.(x));
+	return 1 ./(1 .+ exp.(-x));
 end
 
 function hinge(x)
@@ -16,7 +16,8 @@ end
 
 # subgradient
 function dsigmoid(x)
-	return exp.(x) ./ (1 .+ exp.(x)).^2
+	s = sigmoid(x);
+	return s .* (1 .- s);
 end
 
 function dhinge(x)

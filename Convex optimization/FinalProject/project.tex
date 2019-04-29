@@ -240,8 +240,8 @@ The objective and accuracy of the four methods are shown in Figure \ref{rc1.bina
 \begin{figure}[h]
 \centering
 \vbox{
-	\includegraphics[scale = 0.5]{plots/rc1.binary/objective.jpg}
-	\includegraphics[scale = 0.5]{plots/rc1.binary/accuracy.jpg}
+	\includegraphics[scale = 0.5]{plots/rcv1.binary/objective.jpg}
+	\includegraphics[scale = 0.5]{plots/rcv1.binary/accuracy.jpg}
 }
 \caption{Objective and Accuracy of the four methods with respect to the number of iterations.}
 \label{rc1.binary-obj-acc}
@@ -250,17 +250,21 @@ The objective and accuracy of the four methods are shown in Figure \ref{rc1.bina
 \begin{figure}[h]
 \centering
 \vbox{
-	\includegraphics[scale = 0.5]{plots/rc1.binary/dx.jpg}
-	\includegraphics[scale = 0.5]{plots/rc1.binary/dy.jpg}
+	\includegraphics[scale = 0.5]{plots/rcv1.binary/dx.jpg}
+	\includegraphics[scale = 0.5]{plots/rcv1.binary/dy.jpg}
 } 
 \vbox{
-	\includegraphics[scale = 0.5]{plots/rc1.binary/dz.jpg}
-	\includegraphics[scale = 0.5]{plots/rc1.binary/dw.jpg}
+	\includegraphics[scale = 0.5]{plots/rcv1.binary/dz.jpg}
+	\includegraphics[scale = 0.5]{plots/rcv1.binary/dw.jpg}
 }
 \caption{Norm of subgradients of the four methods with respect to the number of iterations.}
 \label{rc1.binary-subgradient}
 \end{figure}
 
+\subsection{covtype.binary}
 
+We also test the four methods on the \texttt{covtype.binary}. We first rescale the $b$ vector to $\{-1, 1\}$ as mentioned in a homework before. We randomly sampled $20\%$ of the whole dataset, i.e., 116202 samples to form the test set, and use the rest part as the training set.
+
+For APG and PG, we run 200 iterations and record the results from the even iterations. For SSG, we run 2000 iterations with minibatch size $N = 46481$, and only record the results from the $20^{th}, 40^{th}, \hdots, 2000^{th} $ iterations.
 
 \end{document}

@@ -1,15 +1,17 @@
 # include source code
 include("neural_network.jl")
 include("functions.jl")
+include("parameters.jl")
+
+using .parameters: dataname, dataset, H, K, checkpoint, sigma, dsigma, l, dl;
 
 # load data
 using MAT
-data = matread("../datasets/rcv1.binary/rcv1_sep.mat");
+data = matread(dataset);
 A = data["A_train"];
 b = data["b_train"];
 A_test = data["A_test"];
 b_test = data["b_test"];
-
 
 # proximal mapping; since the feasible set is R^n, it is just thd identity mapping
 prox_x = (x, eta) -> x;
@@ -17,19 +19,9 @@ prox_y = (x, eta) -> x;
 prox_z = (x, eta) -> x;
 prox_w = (x, eta) -> x;
 
-# parameters
-sigma = sigmoid;
-l = softmax;
-dsigma = dsigmoid;
-dl = dsoftmax;
-
-# number of iterations
-K = 200;
-
 # random initialize of parameters
 using Random
 Random.seed!(12345);
-H = 128;
 x, y, z, w = initialize([size(A, 2), H, size(b, 2)]);
 
 # solution path
@@ -132,7 +124,7 @@ for i = 1:K
 	wsum += w1;
 
 	# keep track of even iterations
-	if i % 2 == 0
+	if i % checkpoint == 0
 		# save new result
 		xpath = cat(xpath, xsum./(i+1), dims = 3);
 		ypath = cat(ypath, ysum./(i+1), dims = 3);
@@ -163,16 +155,16 @@ end
 
 # save all variables to file
 using HDF5
-h5write("./results/APG.h5", "variables/x", xpath);
-h5write("./results/APG.h5", "variables/y", ypath);
-h5write("./results/APG.h5", "variables/z", zpath);
-h5write("./results/APG.h5", "variables/w", wpath);
-h5write("./results/APG.h5", "results/objective", fpath);
-h5write("./results/APG.h5", "results/dx", dxpath);
-h5write("./results/APG.h5", "results/dy", dypath);
-h5write("./results/APG.h5", "results/dz", dzpath);
-h5write("./results/APG.h5", "results/dw", dwpath);
-h5write("./results/APG.h5", "results/accuracy", accpath);
+h5write(string("./results/", dataname, "/APG.h5"), "variables/x", xpath);
+h5write(string("./results/", dataname, "/APG.h5"), "variables/y", ypath);
+h5write(string("./results/", dataname, "/APG.h5"), "variables/z", zpath);
+h5write(string("./results/", dataname, "/APG.h5"), "variables/w", wpath);
+h5write(string("./results/", dataname, "/APG.h5"), "results/objective", fpath);
+h5write(string("./results/", dataname, "/APG.h5"), "results/dx", dxpath);
+h5write(string("./results/", dataname, "/APG.h5"), "results/dy", dypath);
+h5write(string("./results/", dataname, "/APG.h5"), "results/dz", dzpath);
+h5write(string("./results/", dataname, "/APG.h5"), "results/dw", dwpath);
+h5write(string("./results/", dataname, "/APG.h5"), "results/accuracy", accpath);
 
 # # draw convergence plot and accuracy plot
 # using PyPlot;
