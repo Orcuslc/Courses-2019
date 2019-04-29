@@ -214,25 +214,52 @@ to guarantee the objective function is smooth.
 
 Since we use an iterative way to update the variables, the value of $x$ will be updated from $x_0 $ to $x_1 $ before we start to update $y, z, w$. So there are two schemes in updating:
 \begin{enumerate}
-\item Use $x_0 $ to update $y$, and use $x_0, y_0 $ to update $z$, and use $x_0, y_0, z_0 $ to update $w$.
-\item Use $x_1 $ to update $y$. In this case, we need to recompute the objective function and the derivatives using $ x_1 $. For $y, z, w$, we also use this scheme.
+\item Use $x_0 $ to update $y$, and use $x_0, y_0 $ to update $z$, and use $x_0, y_0, z_0 $ to update $w$ (refered as PG1).
+\item Use $x_1 $ to update $y$. In this case, we need to recompute the objective function and the derivatives using $ x_1 $. For $y, z, w$, we also use this scheme (refered as PG2).
 \end{enumerate}
 We test both schemes in the experiments.
 
 \section{Experiments}
 For the experiments, we test the one-hidden-layer neural network on the datasets \texttt{rcv1.binary} and \texttt{covtype} from libsvm library. We use the same random seed across the experiments to get the same random initialization for a fair comparison. For all following experiments, we compute the objective value, subgradient and out-of-sample accuracy on the averaged variable after each iteration.
 
-We compute the prediction accuracy by
+We compute the out-of-sample prediction accuracy by
 \begin{equation}
-Acc = \frac{1}{n}\sum_{i=1}^{n} 1_{\text{sign}(A_{2i}) = \text{sign}(b_i)} \times 100\%.
+Acc = \frac{1}{n}\sum_{i=1}^{n} 1_{\text{sign}(A_{2i}) = \text{sign}(b_i)} \times 100\%
 \end{equation}
+on an independent test set.
 
 We compute 2-norm of $\partial x$ by first flatten it to a vector, and then compute the vector 2-norm instead of matrix 2-norm. 
 
 \subsection{rcv1.binary}
-For \texttt{rcv1.binary}, we use only the \texttt{rcv1\_train.binary} from libsvm library. We randomly sample $20\%$ of the dataset, i.e., 4048 samples to form the test set, and use the rest part as the training set. 
+For \texttt{rcv1.binary}, we use only the \texttt{rcv1\_train.binary} from libsvm library. We randomly sample $20\%$ of the dataset, i.e., 4048 samples to form the test set, and use the rest part as the training set. Both test set and training set remain the same across the four methods.
 
-For memory issues (i.e., since we need to keep track of each variables and their derivatives), for PG and APG, we run the algorithm with $K = 200$ iterations and only keep track of the results from $2^{nd}, 4^{nd}, \hdots, 200^{th} $ iterations. For SSG, we run $K = 1200$ iterations with minibatch size $N = 2699$ in each iteration, and only keep track of the results from $12^{th}, 24^{th}, \hdots, 1200^{th} $ iterations. Then the total number of training samples for all three algorithms are the same.
+For memory issues (i.e., since we need to keep track of each variables and their derivatives), for PG and APG, we run the algorithm with $K = 200$ iterations and only keep track of the results from $2^{nd}, 4^{th}, \hdots, 200^{th} $ iterations. For SSG, we run $K = 1200$ iterations with minibatch size $N = 2699$ in each iteration, and only keep track of the results from $12^{th}, 24^{th}, \hdots, 1200^{th} $ iterations. Then the total numbers of training samples passed for all three algorithms are the same.
+
+The objective and accuracy of the four methods are shown in Figure \ref{rc1.binary-obj-acc}. PG2 acchieves the lowest objective and highest accuracy among the four methods, with PG1 follows. However, for PG with line search, the computational complexity is much higher than APG and SSG because of the inner loop, and the computational cost of PG2 is much higher than PG1. Figure \ref{rc1.binary-subgradient} shows the 2-norm of each subgradient with respect to the number of iterations. The result agrees with the result of objective and accuracy.
+
+\begin{figure}[h]
+\centering
+\vbox{
+	\includegraphics[scale = 0.5]{plots/rc1.binary/objective.jpg}
+	\includegraphics[scale = 0.5]{plots/rc1.binary/accuracy.jpg}
+}
+\caption{Objective and Accuracy of the four methods with respect to the number of iterations.}
+\label{rc1.binary-obj-acc}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\vbox{
+	\includegraphics[scale = 0.5]{plots/rc1.binary/dx.jpg}
+	\includegraphics[scale = 0.5]{plots/rc1.binary/dy.jpg}
+} 
+\vbox{
+	\includegraphics[scale = 0.5]{plots/rc1.binary/dz.jpg}
+	\includegraphics[scale = 0.5]{plots/rc1.binary/dw.jpg}
+}
+\caption{Norm of subgradients of the four methods with respect to the number of iterations.}
+\label{rc1.binary-subgradient}
+\end{figure}
 
 
 
