@@ -256,10 +256,10 @@ The objective and accuracy of the four methods are shown in Figure \ref{rc1.bina
 \begin{figure}[h]
 \centering
 \vbox{
-	\includegraphics[scale = 0.2]{plots/rcv1.binary/dx.jpg}
-	\includegraphics[scale = 0.2]{plots/rcv1.binary/dy.jpg}
-	\includegraphics[scale = 0.2]{plots/rcv1.binary/dz.jpg}
-	\includegraphics[scale = 0.2]{plots/rcv1.binary/dw.jpg}
+	\includegraphics[scale = 0.5]{plots/rcv1.binary/dx.jpg}
+	\includegraphics[scale = 0.5]{plots/rcv1.binary/dy.jpg}
+	\includegraphics[scale = 0.5]{plots/rcv1.binary/dz.jpg}
+	\includegraphics[scale = 0.5]{plots/rcv1.binary/dw.jpg}
 }
 \caption{Norm of subgradients of the four methods with respect to the number of iterations.}
 \label{rc1.binary-subgradient}
@@ -281,7 +281,7 @@ The objective and accuracy of the four methods are shown in Figure \ref{rc1.bina
 
 We also test these methods on \texttt{real-sim}. We randomly sampled $20\%$ of the dataset, i.e., 14461 samples to form the test set, and use the rest as training set. 
 
-For APG and PG, we run 200 iterations and record the results from the even iterations. For SSG, we run 5600 iterations with minibatch size $N = 3666$, and only record the results from the $56^{th}, 112^{th}, \hdots, 5600^{th} $ iterations.
+For APG and PG, we run 200 iterations and record the results from the even iterations. For SSG, we run 5600 iterations with minibatch size $N = 3666$, and only record the results from the $56^{th}, 112^{th}, \hdots, 5600^{th} $ iterations. However, PG1 stuck at $K = 89$ (probably because of a bad choice of hyperparameters, i.e. $\eta$), so we only show the results of PG1 and PG2 up to iteration 88.
 
 The objective and accuracy of the four methods are shown in Figure \ref{real-sim-obj-acc}. PG2 acchieves the lowest objective and highest accuracy among the four methods, with PG1 follows. However, for PG with line search, the computational complexity is much higher than APG and SSG because of the inner loop, and the computational cost of PG2 is much higher than PG1. Figure \ref{real-sim-subgradient} shows the 2-norm of each subgradient with respect to the number of iterations. The result agrees with the result of objective and accuracy.
 
@@ -298,10 +298,10 @@ The objective and accuracy of the four methods are shown in Figure \ref{real-sim
 \begin{figure}[h]
 \centering
 \vbox{
-	\includegraphics[scale = 0.2]{plots/real-sim/dx.jpg}
-	\includegraphics[scale = 0.2]{plots/real-sim/dy.jpg}
-	\includegraphics[scale = 0.2]{plots/real-sim/dz.jpg}
-	\includegraphics[scale = 0.2]{plots/real-sim/dw.jpg}
+	\includegraphics[scale = 0.5]{plots/real-sim/dx.jpg}
+	\includegraphics[scale = 0.5]{plots/real-sim/dy.jpg}
+	\includegraphics[scale = 0.5]{plots/real-sim/dz.jpg}
+	\includegraphics[scale = 0.5]{plots/real-sim/dw.jpg}
 }
 \caption{Norm of subgradients of the four methods with respect to the number of iterations.}
 \label{real-sim-subgradient}
@@ -312,7 +312,9 @@ For this part, we generate 1000 Gaussian-distributed samples of dimension $d=4$ 
 
 We train a 128-hidden-unit neural network on this dataset. SSG is run $K=2000$ iterations with minibatch size $N = 100$, and PG, APG are run $K = 200$ iterations. 
 
-The objective value on each iteration and the prediction accuracy on the training set is shown in Figure \ref{bernoulli-obj-acc}. The relative error of each variable $x, y, z, w$ measured in relative $L_2 $ norm is shown in Figure \ref{bernoulli-error} . We can observe that PG2 and SSG achieve the fastest convergence in both accuracy and objective value. However, a clear overfitting occurs for almost all variables, so we cannot decide which method has the smallest error in the variables.
+The objective value on each iteration and the prediction accuracy on the training set is shown in Figure \ref{bernoulli-obj-acc}. The relative error of each variable $x, y, z, w$ measured in relative $L_2 $ norm is shown in Figure \ref{bernoulli-error} . We can observe that PG2 achieves the highest convergence rate in objective and accuracy. However, SSG has the fastest convergence in most of the partial derivatives. PG1 behaves very unstable for this problem with the tested set of hyperparameters.
+
+
 
 \begin{figure}[ht]
 \centering
@@ -327,13 +329,18 @@ The objective value on each iteration and the prediction accuracy on the trainin
 \begin{figure}[h]
 \centering
 \vbox{
-	\includegraphics[scale = 0.2]{plots/bernoulli/xerr.jpg}
-	\includegraphics[scale = 0.2]{plots/bernoulli/yerr.jpg}
-	\includegraphics[scale = 0.2]{plots/bernoulli/zerr.jpg}
-	\includegraphics[scale = 0.2]{plots/bernoulli/werr.jpg}
+	\includegraphics[scale = 0.5]{plots/bernoulli/xerr.jpg}
+	\includegraphics[scale = 0.5]{plots/bernoulli/yerr.jpg}
+	\includegraphics[scale = 0.5]{plots/bernoulli/zerr.jpg}
+	\includegraphics[scale = 0.5]{plots/bernoulli/werr.jpg}
 }
 \caption{Relative $L_2 $ error for each variable with respect to the number of iterations.}
 \label{bernoulli-error}
 \end{figure}
+
+\begin{remark}
+From the three numerical examples, we can observe that, with a good choice of hyperparameters, PG2 has the best convergence rate but in price of the highest computational cost. APG and PG are very sensitive to the values of the hyperparameters. SSG is very stable and very computationally efficient since we don't need to determine the Lipshitz constant for the gradients. Although SSG has a relatively slow convergence, it has a most widely application.
+
+\end{remark}
 
 \end{document}

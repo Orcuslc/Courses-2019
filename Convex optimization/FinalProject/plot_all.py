@@ -3,7 +3,8 @@ import h5py
 import numpy as np
 import sys
 
-save_path = "rc1.binary"
+# save_path = "rc1.binary"
+save_path = "real-sim"
 
 objectives = {}
 accuracies = {}
@@ -15,7 +16,7 @@ dws = {}
 methods = ['SSG', 'APG', 'PG1', 'PG2']
 
 for method in methods:
-	filename = 'results/{0}.h5'.format(method)
+	filename = 'results/{1}/{0}.h5'.format(method, save_path)
 
 	f = h5py.File(filename, 'r')
 	results = f['results']
@@ -49,7 +50,7 @@ K = range(0, 201, 2)
 plt.figure(0)
 lines = []
 for method in methods:
-	l, = plt.semilogy(K, objectives[method], linewidth = 2, label = method)
+	l, = plt.semilogy(K[:len(objectives[method])], objectives[method], linewidth = 2, label = method)
 	lines.append(l)
 plt.legend(lines, methods)
 plt.grid(True)
@@ -61,7 +62,7 @@ plt.savefig("plots/{0}/objective.jpg".format(save_path))
 plt.figure(1)
 lines = []
 for method in methods:
-	l, = plt.plot(K, accuracies[method], linewidth = 2, label = method)
+	l, = plt.plot(K[:len(objectives[method])], accuracies[method], linewidth = 2, label = method)
 	lines.append(l)
 plt.legend(lines, methods)
 plt.grid(True)
@@ -73,7 +74,7 @@ plt.savefig("plots/{0}/accuracy.jpg".format(save_path))
 plt.figure(2)
 lines = []
 for method in methods:
-	l, = plt.semilogy(K[1:], dxs[method][1:], linewidth = 2, label = method)
+	l, = plt.semilogy(K[:len(objectives[method])][1:], dxs[method][1:], linewidth = 2, label = method)
 	lines.append(l)
 plt.legend(lines, methods)
 plt.grid(True)
@@ -84,7 +85,7 @@ plt.savefig("plots/{0}/dx.jpg".format(save_path))
 plt.figure(3)
 lines = []
 for method in methods:
-	l, = plt.semilogy(K[1:], dys[method][1:], linewidth = 2, label = method)
+	l, = plt.semilogy(K[:len(objectives[method])][1:], dys[method][1:], linewidth = 2, label = method)
 	lines.append(l)
 plt.legend(lines, methods)
 plt.grid(True)
@@ -95,7 +96,7 @@ plt.savefig("plots/{0}/dy.jpg".format(save_path))
 plt.figure(4)
 lines = []
 for method in methods:
-	l, = plt.semilogy(K[1:], dzs[method][1:], linewidth = 2, label = method)
+	l, = plt.semilogy(K[:len(objectives[method])][1:], dzs[method][1:], linewidth = 2, label = method)
 	lines.append(l)
 plt.legend(lines, methods)
 plt.grid(True)
@@ -107,7 +108,7 @@ plt.savefig("plots/{0}/dz.jpg".format(save_path))
 plt.figure(5)
 lines = []
 for method in methods:
-	l, = plt.semilogy(K[1:], dws[method][1:], linewidth = 2, label = method)
+	l, = plt.semilogy(K[:len(objectives[method])][1:], dws[method][1:], linewidth = 2, label = method)
 	lines.append(l)
 plt.legend(lines, methods)
 plt.grid(True)

@@ -3,8 +3,10 @@ import h5py
 import numpy as np
 import sys
 
-method = sys.argv[1]
-filename = 'results/{0}.h5'.format(method)
+dataset = sys.argv[1]
+method = sys.argv[2]
+
+filename = 'results/{1}/{0}.h5'.format(method, dataset)
 
 f = h5py.File(filename, 'r')
 results = f['results']
