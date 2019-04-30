@@ -1,8 +1,8 @@
 include("functions.jl")
 
 # data
-dataname = "real-sim";
-dataset = "../datasets/real-sim/real-sim.mat";
+dataname = "bernoulli";
+dataset = "bernoulli.mat";
 
 # number of hidden nodes
 H = 128;
@@ -12,11 +12,11 @@ K = 200;
 checkpoint = 2;
 
 # number of iterations for SSG
-K_SSG = 5600;
-checkpoint_SSG = 56;
+K_SSG = 2000;
+checkpoint_SSG = 20;
 
 # for SSG
-batchsize = 3666;
+batchsize = 100;
 
 # choise of functions
 sigma = sigmoid;

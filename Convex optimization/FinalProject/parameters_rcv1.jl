@@ -1,8 +1,8 @@
 include("functions.jl")
 
 # data
-dataname = "real-sim";
-dataset = "../datasets/real-sim/real-sim.mat";
+dataname = "rcv1.binary";
+dataset = "../datasets/rcv1.binary/rcv1_sep.mat";
 
 # number of hidden nodes
 H = 128;
@@ -12,11 +12,11 @@ K = 200;
 checkpoint = 2;
 
 # number of iterations for SSG
-K_SSG = 5600;
-checkpoint_SSG = 56;
+K_SSG = 1200;
+checkpoint_SSG = 12;
 
 # for SSG
-batchsize = 3666;
+batchsize = 2699;
 
 # choise of functions
 sigma = sigmoid;
@@ -25,16 +25,16 @@ l = softmax;
 dl = dsoftmax;
 
 # for PG and APG, step size
-x_eta = 0.4;
-y_eta = 0.4;
-z_eta = 0.4;
+x_eta = 4.0;
+y_eta = 4.0;
+z_eta = 4.0;
 w_eta = 4.0;
 
 # for APG
-x_gamma0 = 1/(2*x_eta);
-y_gamma0 = 1/(2*y_eta);
-z_gamma0 = 1/(2*z_eta);
-w_gamma0 = 1/(2*w_eta);
+x_gamma0 = 1/x_eta;
+y_gamma0 = 1/y_eta;
+z_gamma0 = 1/z_eta;
+w_gamma0 = 1/w_eta;
 
 # for PG with line search
 x_gamma_dec = 0.9;

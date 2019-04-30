@@ -1,8 +1,11 @@
 include("functions.jl")
 
 # data
-dataname = "real-sim";
-dataset = "../datasets/real-sim/real-sim.mat";
+# dataname = "rcv1.binary";
+# dataset = "../datasets/rcv1.binary/rcv1_sep.mat";
+
+dataname = "covtype";
+dataset = "../datasets/covtype/covtype_sep.mat";
 
 # number of hidden nodes
 H = 128;
@@ -12,11 +15,11 @@ K = 200;
 checkpoint = 2;
 
 # number of iterations for SSG
-K_SSG = 5600;
-checkpoint_SSG = 56;
+K_SSG = 2000;
+checkpoint_SSG = 200;
 
 # for SSG
-batchsize = 3666;
+batchsize = 46481;
 
 # choise of functions
 sigma = sigmoid;
