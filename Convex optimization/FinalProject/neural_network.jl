@@ -78,8 +78,11 @@ function accuracy(b_pred, b_true)
 	return 100*sum(b_pred .* b_true .> 0)/size(b_pred, 1);
 end
 
+# function normalize(A)
+# 	#=
+# 		normalize each feature to
 
-# function compute_R(A, x, y)
+# function compute:_R(A, x, y)
 # 	#=
 # 		defined in (2.4)
 # 	=#

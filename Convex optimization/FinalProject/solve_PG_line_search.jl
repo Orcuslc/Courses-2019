@@ -3,8 +3,6 @@ include("neural_network.jl")
 include("functions.jl")
 include("parameters.jl")
 
-using .parameters: dataname, dataset, H, K, checkpoint, sigma, dsigma, l, dl;
-
 # load data
 using MAT
 data = matread(dataset);
@@ -36,20 +34,6 @@ dxpath = zeros(size(x)); dypath = zeros(size(y)); dzpath = zeros(size(z)); dwpat
 # objective and prediction accuracy path
 fpath = zeros(1, 1);
 accpath = zeros(1, 1);
-
-# step size
-x_eta = 4.0;
-x_gamma_dec = 0.9;
-x_gamma_inc = 0.5;
-y_eta = 4.0;
-y_gamma_dec = 0.9;
-y_gamma_inc = 0.5;
-z_eta = 4.0;
-z_gamma_dec = 0.9;
-z_gamma_inc = 0.5;
-w_eta = 4.0;
-w_gamma_dec = 0.9;
-w_gamma_inc = 0.5;
 
 # first run
 f, _, _ = forward(A, b, x, y, z, w, sigma, l);

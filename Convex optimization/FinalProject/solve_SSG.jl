@@ -3,8 +3,6 @@ include("neural_network.jl")
 include("functions.jl")
 include("parameters.jl")
 
-using .parameters: dataname, dataset, H, K_SSG, checkpoint_SSG, batchsize, sigma, dsigma, l, dl;
-
 # load data
 using MAT
 data = matread(dataset);
@@ -21,9 +19,6 @@ proj_w = x -> x;
 
 # sample xi
 sample_xi = () -> rand(1:size(A, 1), (batchsize, 1))[:, 1];
-
-# stepsize
-C = 1.0;
 
 # random initialize of parameters)
 using Random
