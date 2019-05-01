@@ -42,12 +42,18 @@ contains
     !NOTE: These are calculated beyond the grid to allow for IC initialization
     allocate(rx(-1:nx)); rx(:)=0.
     allocate(ry(-1:ny)); ry(:)=0.
+
+    !$omp parallel do
     do i=-1,nx
        rx(i)=real(i)/real(nx)*lx
     enddo
+    !$omp end parallel do
+    !$omp parallel do
     do i=-1,ny
        ry(i)=real(i)/real(ny)*ly
     enddo
+    !$omp end parallel do
+
 
     !SIMPLE Domain Decomposition in x direction-------------------------------------
     if (mod(nx,nproc) .eq. 0) then
@@ -65,9 +71,12 @@ contains
     !Set value for the local information
     !NOTE: This handles the case that no points are on a processor (lnx0>lnx1)
     !      and will not cause array out of bounds
+    !$omp parallel do
     do i=lnx0,lnx1
        iproc_ix(i)=iproc
     enddo
+    !$omp end parallel do
+
     !Gather all of the information on proc0
     allocate(tmp(0:nx-1)); tmp=iproc_ix
     call mpi_allreduce(tmp, iproc_ix, size(iproc_ix), MPI_INTEGER, MPI_SUM, mpi_comm_world, ierror)

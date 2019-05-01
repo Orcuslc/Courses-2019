@@ -101,21 +101,25 @@ contains
     !Get dqdt at t=0 and save in tdqdt2----------------------------------------
     !NOTE: BC's need not be passed because initialization has taken care of this
 !    if (proc0) write(*,'(a)')'Calc dqdt' 
+    !$omp parallel do
     do ix=lnx0,lnx1 !Loop over all local ix's
        do iy=0,ny-1
           dqdt(1:imax,ix,iy)=dqdt_hd(qq(1:imax,ix-1:ix+1,iy-1:iy+1), &
                rx(ix-1:ix+1),ry(iy-1:iy+1),gamma)
        enddo
     enddo
+    !$omp end parallel do
     tdqdt2(:,:,:)=dqdt(:,:,:) !Save Rates at step n=0 (dt)
     
     !Take first-order Euler timestep to t=dt1----------------------------------
 !    if (proc0) write(*,'(a)')'Euler advance' 
+    !$omp parallel do
     do ix=lnx0,lnx1 !Loop over all local ix's
        do iy=0,ny-1
           qq(1:imax,ix,iy)=adv_euler(qq(1:imax,ix,iy),dt1,dqdt(1:imax,ix,iy))
        enddo
     enddo
+    !$omp end parallel do
     tt=tt+dt1
     dqdt1(:,:,:)=dqdt(:,:,:)
 
@@ -125,21 +129,27 @@ contains
     call pass_bcs
 !    if (proc0) write(*,'(a)')'Advance' 
     !Get dqdt at t=dt1
+    !$omp parallel do
     do ix=lnx0,lnx1 !Loop over all local ix's
        do iy=0,ny-1
           dqdt(1:imax,ix,iy)=dqdt_hd(qq(1:imax,ix-1:ix+1,iy-1:iy+1), &
                rx(ix-1:ix+1),ry(iy-1:iy+1),gamma)
        enddo
     enddo
+    !$omp end parallel do
+    !$omp parallel do
     do ix=lnx0,lnx1 !Loop over all local ix's
        do iy=0,ny-1
           qq(1:imax,ix,iy)=adv_euler(qq(1:imax,ix,iy),dt1,dqdt(1:imax,ix,iy))
        enddo
     enddo
+    !$omp end parallel do
     tt=tt+dt1
 !    dqdt2(:,:,:)=dqdt1(:,:,:)
 !    dqdt1(:,:,:)=dqdt(:,:,:)
     
+    ! not sure if I can make the whole loop parallel since there's a pass_bcs inside;
+
     !Loop over small initializing time steps to get to t=2*dt------------------
     do it1=3,32
 !       if (proc0) write(*,'(a,i2,a)')'Initialization Iteration ',it1,'/16'
@@ -149,12 +159,16 @@ contains
        dqdt2=dqdt1
        dqdt1=dqdt
        !Get dqdt
+
+       !$omp parallel do
        do ix=lnx0,lnx1 !Loop over all local ix's
           do iy=0,ny-1
              dqdt(1:imax,ix,iy)=dqdt_hd(qq(1:imax,ix-1:ix+1,iy-1:iy+1), &
                   rx(ix-1:ix+1),ry(iy-1:iy+1),gamma)
           enddo
        enddo
+       !$omp end parallel do
+       !$omp parallel do
        !Timestep forward using AB3
        do ix=lnx0,lnx1 !Loop over all local ix's
           do iy=0,ny-1
@@ -162,6 +176,7 @@ contains
                   dqdt1(1:imax,ix,iy),dqdt2(1:imax,ix,iy))
           enddo
        enddo
+       !$omp end parallel do
        !Advance time
        tt=tt+dt1
        

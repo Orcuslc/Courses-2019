@@ -73,6 +73,7 @@ program hydro
 
   if (.true.) then
   !MAIN PROGRAM TIMESTEP LOOP=================================================
+
   do it=3,nsteps
      call timing(t_adv)
      call timing(t_comm)
@@ -85,6 +86,8 @@ program hydro
      !Move old timesteps back one
      dqdt2=dqdt1
      dqdt1=dqdt
+
+     !$omp parallel do
      !Loop over all local points to calculate current derivatives dqdt
      do ix=lnx0,lnx1 !Loop over all local ix's
         do iy=0,ny-1
@@ -92,7 +95,9 @@ program hydro
                 rx(ix-1:ix+1),ry(iy-1:iy+1),gamma)
         enddo
      enddo
+     !$omp end parallel do
 
+     !$omp parallel do
      !Time step fluid variables forward using AB3-----------------------------
      do ix=lnx0,lnx1 !Loop over all local ix's
         do iy=0,ny-1
@@ -100,6 +105,7 @@ program hydro
                 dqdt1(1:imax,ix,iy),dqdt2(1:imax,ix,iy))
         enddo
      enddo
+     !$omp end parallel do
      
      !Advance time
      tt=tt+dt

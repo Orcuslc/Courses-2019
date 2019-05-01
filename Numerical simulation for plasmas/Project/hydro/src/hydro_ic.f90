@@ -134,12 +134,16 @@ contains
     ky=real(nky0)*2.*pi/ly
     k=sqrt(kx*kx+ky*ky)
     !NOTE: This calculation on each processor includes the boundary values
+
+    ! changed for openmp
+    !$omp parallel do 
     do ix=lnx0-1,lnx1+1
        qq(ip,ix,:)=p0+p1*cos(kx*rx(ix)+ky*ry(:))
        qq(irho,ix,:)=rho0+(qq(ip,ix,:)-p0)/(cs0*cs0)
        qq(iux,ix,:)=ux0+cs0*kx/k*(qq(ip,ix,:)-p0)/(gamma*p0)
        qq(iuy,ix,:)=uy0+cs0*ky/k*(qq(ip,ix,:)-p0)/(gamma*p0)
     enddo
+    !$omp end parallel do
     
     !Calculate CFL timestep stability condition---------------------------------
     dr=min(rx(1)-rx(0),ry(1)-ry(0))

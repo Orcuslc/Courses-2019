@@ -17,16 +17,24 @@
 # SET VARIABLES FOR SYSTEM, DEBUGGING, and PROFILING
 # SYSTEM options: helium, SiCortex, XT3, MacPro, uiowa,
 # SET export SYSTEM=argon
-SYSTEM= argon
+SYSTEM=ArchLinux
 DEBUG= false
 PROFILE= false
+
+ifeq ($(SYSTEM), ArchLinux)
+	COMP = mpif90
+	FLAGS = -fdefault-real-8 -O3 -fopenmp
+	ifeq ($(PROFILE), true)
+		FLAGS += -g
+	endif
+endif
 
 ###############################################################################
 ###############################################################################
 #SET FLAGS FOR U IOWA Shared Research Cluster neon.hpc.uiowa.edu
 ifeq ($(SYSTEM),argon)
 	COMP= mpif90
-	FLAGS = -r8 -double-size 128 -O3
+	FLAGS = -r8 -double-size 128 -O3 -fopenmp
 	ifeq ($(PROFILE),true)
 		FLAGS += -g
 	endif
