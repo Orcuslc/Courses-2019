@@ -1,0 +1,46 @@
+!==============================================================================
+!  sample1.in  Sample input file
+!  HYDRO SAMPLE INPUT FILE
+!
+!  Greg Howes
+!  2009 JUL 28 
+! NOTE: This is a dimensional code, with all variables in SI units
+!==============================================================================
+! REQUIRED NAMELISTS
+!==============================================================================
+! SYSTEM, PLASMA, AND MODEL PARAMETERS
+&system
+ !Number of gridpoints--------------------------------------------------------
+ nx = 128          !Number of gridpoints in x
+ ny = 128        !Number of gridpoints in y
+ !Length of simulation box (m)------------------------------------------------	
+ lx = 1.0          !Length of simulation domain in x
+ ly = 1.0          !Length of simulation domain in y
+ !Timestepping----------------------------------------------------------------
+ dt = 0.00025         !Timestep (s)
+ nsteps=4000       !Total number of timesteps to run
+ nsave=400         !Save output at each nsave steps
+ save0=.true.	   !T=Output Initial Conditions
+ !Initial conditions----------------------------------------------------------
+ init = 0          ! 0 = sound wave initial conditions 
+ /
+!==============================================================================
+!==============================================================================
+! OPTIONAL NAMELISTS
+!==============================================================================
+! Sound Wave Initialization
+&sound
+  !Equilibrium conditions----------------------------------------------------------	
+ rho0 = 5.0         !Equilibrium density (kg/m^3)
+ p0   = 3.0         !Equilibrium pressure (N/m^2 = kg/(s^2 m))
+ ux0  = 0.0         !Equilibrium velocity in x (m/s)
+ uy0  = 0.0         !Equilibrium velocity in y (m/s)
+ gamma = 1.666667   !Adiabatic Index
+ !Sound wave solutions
+ nkx0 = 1           !Integral Sound Wavenumber in x (Number of wavelengths per lx)
+ nky0 = 0           !Integral Sound Wavenumber in y (Number of wavelengths per ly)
+ p1  = 0.003        !Pressure perturbation (N/m^2)
+/
+!==============================================================================
+!==============================================================================
+
