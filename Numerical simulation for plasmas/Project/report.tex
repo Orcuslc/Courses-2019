@@ -1,0 +1,40 @@
+\documentclass{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usepackage[plain]{algorithm}
+\usepackage{algpseudocode}
+
+\begin{document}
+\author{Chuan Lu}
+\title{PHYS:5905 Final Project}
+\maketitle
+
+\medskip
+
+\begin{enumerate}
+\item MPI/OpenMP hybrid code: add OpenMP support for the the MPI-enabled HYDRO code.
+
+\item Setup:
+We run the simulation on a $1024\times 1024$ grid on $[0, 1]\times [0, 1]$, with number of timesteps being 4000 and final time $T = 1.0$. Since the next time step requires information of the current and the previous steps, we only add openmp in each timesteps, but not between timesteps.
+
+\item Validation:
+Compared the new outputs with the original ones using $\texttt{diff}$ (with grid size $128\times 128$). All outputs are exactly the same. We also compared the output of different settings of parallelization with grid size $1024\times 1024$, and the outputs are also the same.
+
+\item Time: We test the program on two 32-core nodes on Argon, with OMP\_NUM\_THREADS ranging from 32 to 1 while keeping the product of threads and MPI tasks at 64. Figure \ref{1} shows the computational time of the options. Using OpenMP on each MPI task increases the total time cost when the grid size is not very large. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.6]{test1.jpg}
+\caption{Running time vs. OMP threads}
+\label{1}
+\end{figure}
+
+\end{enumerate}
+
+
+\end{document}
