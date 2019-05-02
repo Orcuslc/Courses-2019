@@ -1,0 +1,66 @@
+\documentclass{article}
+
+\usepackage{amsthm,amsmath,amssymb}
+\usepackage[numbers]{natbib}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\newcommand{\bx}{{\mathbf x}}
+\newcommand{\by}{{\mathbf y}}
+\newcommand{\ba}{{\mathbf a}}
+\newcommand{\bv}{{\mathbf v}}
+\newcommand{\bu}{{\mathbf u}}
+\newcommand{\bw}{{\mathbf w}}
+
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}{Remark}[section]
+\newtheorem{example}[theorem]{Example}
+
+
+\begin{document}
+
+\title{Management Sciences Topics: Convex Optimization\\ Homework 5: Due May 2nd (11:59 pm) }
+%\author{Qihang Lin}
+\date{}
+
+\maketitle
+
+\noindent\textbf{Problem 1:}  Reformulate the overlapping group regularized logistic regression problem in Problem 2 of Homework 3 into an optimization model that allows using linearized augmented Lagrangian method. In particular, reformulate as 
+$$
+\min{g(x)+h(x)}\quad\text{s.t.}, Ax=b.
+$$ 
+You need to explicitly define what  $A$ and $b$ are.
+\bigskip
+
+By the same definition in Homework 3, we define
+$$
+w_g = C_g x,
+$$
+where $C_g \in\mathbb{R}^{|g|\times d} $, and
+$$
+(C_g)_{ij} = \left\{
+\begin{aligned}
+&1, \quad j = g^i \\
+&0, \quad \text{others}
+\end{aligned}
+\right.
+$$
+Then let 
+$$
+C = [C_{g_1},\hdots, C_{g_{|G|}}]^\top, \quad b = [x_{g_1}^1, \hdots, x_{g_1}^{|g_1|}, x_{g_2}^1, \hdots, x_{g_2}^{|g_2|}, \hdots, x_{g_{|G|}}^{1}, \hdots, x_{g_{|G|}}^{|g_{|G|}|}]^\top,
+$$
+then we have $Cx = b$.
+
+(But, if we define $b$ as above, it will change in the iterations.)
+\bigskip
+
+\noindent\textbf{Problem 2:}  Apply the linearized augmented Lagrangian method to the new formulation of the overlapping group regularized logistic regression problem 
+in Problem 1. The data and the parameters for the problem are the same as  Problem 2 of Homework 3.
+Plot the objective value and the infeasibility measure in all iterates. You can manually tune $\beta$ and $\rho$ to achieve a good performance. 
+\end{document}
+
