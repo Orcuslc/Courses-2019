@@ -1,0 +1,123 @@
+\documentclass{article}
+\usepackage[a4paper,margin=1cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usepackage[plain]{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+
+\begin{document}
+\author{Chuan Lu}
+\title{BIOS:7600 Homework 8}
+\maketitle
+
+\medskip
+
+\begin{enumerate}
+
+\item Problem 10.1, Logistic regression: Score and Hessian
+\begin{enumerate}
+\item 
+\begin{proof}
+First, consider
+\begin{equation}
+\frac{\partial L}{\partial \pi_i} = -\frac{1}{n}\frac{y_i - \pi_i}{\pi_i(1-\pi_i)},
+\end{equation}
+and
+\begin{equation}
+\frac{d\pi_i}{d\eta_i} = -\frac{\partial_{\eta_i} f}{\partial_{\pi_i} f} = \pi_i(1-\pi_i), \quad 
+\frac{d\pi_i}{d\eta_j} = 0,
+\end{equation}
+Then
+\begin{equation}
+\frac{\partial L}{\partial \eta_i} = \sum_{j = 1}^{n}\frac{\partial L}{\partial \pi_j}\frac{\partial \pi_j}{\partial \eta_i} = -\frac{1}{n}(y_i - \pi_i).
+\end{equation}
+So
+\begin{equation}
+-\frac{\partial L}{\partial \eta} = \frac{1}{n}(y-\pi).
+\end{equation}
+\end{proof}
+
+\item
+\begin{proof}
+First,
+\begin{equation}
+\frac{\partial^2 L}{\partial \eta^2} = \frac{\partial}{\partial \eta}(\frac{\partial L}{\partial \eta}) = -\frac{1}{n}\frac{\partial }{\partial \eta}(y - \pi).
+\end{equation}
+Then for $i\ne j$,
+\begin{equation}
+\left(\frac{\partial^2 L}{\partial\eta^2}\right)_{ij} = \frac{1}{n}\frac{\partial}{\partial \eta_i}\pi_j = 0,
+\end{equation}
+and
+\begin{equation}
+\left(\frac{\partial^2 L}{\partial\eta^2}\right)_{ii} = \frac{1}{n}\frac{\partial}{\partial \eta_i}\pi_i = \frac{1}{n}\pi_i(1-\pi_i).
+\end{equation}
+
+\end{proof}
+
+
+\end{enumerate}
+
+\item Problem 10.2, Quadratic approximation to loss functions.
+
+\begin{proof}
+By Taylor expansion, 
+\begin{equation}
+L(\eta) = L(\tilde\eta)-v\cdot(\tilde\eta - \eta) + \frac{1}{2}(\eta-\tilde\eta)^\top A(\eta - \tilde\eta) + o(|\tilde\eta - \eta|^3 ).
+\end{equation}
+Let $r = \tilde\eta-\eta$, then
+\begin{equation}
+L(\eta) - L(\tilde\eta) = -v\cdot r + \frac{1}{2}r^\top Ar + o(|r|^3) = \frac{1}{2}(r - A^{-1}v)^\top A(r-A^{-1}v) - v^\top A^{-1}v + o(|r|^3).
+\end{equation}
+Then
+\begin{equation}
+L(\beta) \approx \frac{1}{2}(z-X\beta)^\top A(z-X\beta).
+\end{equation}
+\end{proof}
+
+\item Problem 13.1, Group lasso analysis of leukemia data
+
+\begin{enumerate}
+\item
+With this code below, this model selected 54 genes, while the ordinary lasso selected 26 genes. So group lasso is more liberal than ordinary lasso.
+\begin{lstlisting}[language=R]
+library("hdrm")
+library("splines")
+library("grpreg")
+downloadData("Golub1999")
+attachData("Golub1999")
+
+group_X = c();
+for(i in 1:ncol(X)) {
+  group_X = cbind(group_X, ns(X[, i], df = 3));
+}
+
+fit = cv.grpreg(group_X, y, rep(1:ncol(X), each = 3), family = "binomial");
+lambda = which.min(fit$cve);
+beta = fit$fit$beta[, lambda];
+nparam = which(beta != 0)
+\end{lstlisting}
+
+\item
+As can be seen in this table, for both mean error and standard error, allowing nonlinear effects helps to increse the accuracy.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+     & group lasso & ordinary lasso \\ \hline
+cve  & 0.2587123   & 0.3856799      \\ \hline
+cvse & 0.06825018  & 0.1192066      \\ \hline
+\end{tabular}
+\end{table}
+
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{document}
