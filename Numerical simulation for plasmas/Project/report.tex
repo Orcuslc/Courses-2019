@@ -34,7 +34,27 @@ Compared the new outputs with the original ones using $\texttt{diff}$ (with grid
 \label{1}
 \end{figure}
 
+
+\item 
+I also want to test the same setup with the number of MPI tasks set at 2, but with the different number of OMP threads, which ranges from 1 to 32. I tried to run the whole simulation, but it turned out an error message:
+
+--------------------------------------------------------------------------
+ORTE has lost communication with a remote daemon.
+
+  HNP daemon   : [[29684,0],0] on node argon-itf-cf46-11
+  Remote daemon: [[29684,0],1] on node argon-itf-cf46-10
+
+This is usually due to either a failure of the TCP network
+connection to the node, or possibly an internal failure of
+the daemon itself. We cannot recover from this failure, and
+therefore will terminate the job.
+--------------------------------------------------------------------------
+
+This happened every time when I try to run the code today, so I have to submit such a non-completed report to meet the deadline. I will try to re-run the code on Wednesday (since I will take a flight tomorrow morning to China), and I will update the results then.
+
+
 \end{enumerate}
+
 
 
 \end{document}
