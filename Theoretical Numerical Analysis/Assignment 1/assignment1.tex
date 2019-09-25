@@ -1,0 +1,142 @@
+
+\documentclass{article}%
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{amsfonts}%
+\usepackage{amssymb}
+
+
+\setlength{\topmargin}{-0.75in}
+\setlength{\textheight}{9.25in}
+\setlength{\oddsidemargin}{0.0in}
+\setlength{\evensidemargin}{0.0in}
+\setlength{\textwidth}{6.5in}
+\def\labelenumi{\arabic{enumi}.}
+\def\theenumi{\arabic{enumi}}
+\def\labelenumii{(\alph{enumii})}
+\def\theenumii{\alph{enumii}}
+\def\p@enumii{\theenumi.}
+\def\labelenumiii{\arabic{enumiii}.}
+\def\theenumiii{\arabic{enumiii}}
+\def\p@enumiii{(\theenumi)(\theenumii)}
+\def\labelenumiv{\arabic{enumiv}.}
+\def\theenumiv{\arabic{enumiv}}
+\def\p@enumiv{\p@enumiii.\theenumiii}
+\pagestyle{plain}
+\setcounter{secnumdepth}{0}
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\begin{document}
+
+\title{Theoretical Numerical Analysis, Assignment 1}
+\author{Chuan Lu}
+\date{\today}
+\maketitle
+
+\begin{enumerate}
+
+\item Problem 1.4.13
+
+Let 
+\begin{equation}
+f(x) = \left\{
+\begin{aligned}
+&-1, \quad& x \le -1 \\
+&\frac{e^\frac{1}{x-1}-e^\frac{1}{x+1}}{e^\frac{1}{x-1}+e^\frac{1}{x+1}}, \quad& -1 < x < 1 \\
+&1, \quad& x \ge 1
+\end{aligned}
+\right.
+\end{equation}
+Then by Exercise 1.4.11, we know $f\in C^\infty(\mathbb{R}) $.
+
+\item Problem 1.5.4
+
+First, by Jensen's inequality we have the given inequality. Then
+\begin{equation}
+\log\left(
+\frac{a^p}{p}+\frac{b^q}{q}
+\right)
+\ge \frac{1}{p}\log a^p + \frac{1}{q}\log b^q = \log a + \log b = \log ab.
+\end{equation}
+Since $\log(\cdot) $ is an increasing function, 
+\begin{equation}
+\frac{a^p}{p}+\frac{b^q}{q} \ge ab.
+\end{equation}
+
+\item Problem 1.5.9
+
+\begin{equation}
+\begin{aligned}
+|(f\ast g)(x)| &= \left|\int_{\mathbb{R}^d}f(y)g(x-y)dy\right| \le \int_{\mathbb{R}^d}|f(y)||g(x-y)|dy \\
+&= \int_{\mathbb{R}^d}|f(y)||g(x-y)|^\frac{1}{p}|g(x-y)|^\frac{1}{q}dy \\
+&\le \lVert f(y)g(x-y)^\frac{1}{p}\rVert_{L^p}\lVert g(x-y)^\frac{1}{q}\rVert_{L^q}.
+\end{aligned}
+\end{equation}
+This comes from that 
+\begin{equation}
+fg^{\frac{1}{p}} \in L^p, \ g^{\frac{1}{q}} \in L^q.
+\end{equation}
+
+Then
+\begin{equation}
+\begin{aligned}
+\lVert f\ast g\rVert_{L^p} &\le \left\lVert \lVert f(y)g(x-y)^\frac{1}{p}\rVert_{L^p}\lVert g(x-y)^\frac{1}{q}\rVert_{L^q} \right\rVert_{L^p}  \\
+&\le \lVert f\rVert_{L^p} \left\lVert\lVert g^\frac{1}{p}\rVert_{L^p} \lVert g^{\frac{1}{q}}\rVert_{L^q} \right\lVert_{L^p} \\
+&= \lVert f\rVert_{L^p} \lVert g\rVert_{L^1}^\frac{1}{p} \lVert g\rVert_{L^1}^\frac{1}{q}  = \lVert f\rVert_{L^p} \lVert g\rVert_{L^1}.
+\end{aligned}
+\end{equation}
+
+\item Problem 1.5.10
+
+Let
+\begin{equation}
+u(x) = u_n, \ v(x) = v_n,  \ n \le x < n+1.
+\end{equation}
+Then $u \in L^p, \ v\in L^q $, and 
+\begin{equation}
+\begin{aligned}
+\sum_{n=0}^{\infty}u_nv_n &= \int_{\mathbb{R}} u(x)v(x)dx \le \int_{\mathbb{R}} |u(x)| |v(x)| dx \\
+&\le \lVert u\rVert_{L^p}\lVert v\rVert_{L^q} = \lVert u\rVert_{\ell^p}\lVert v\rVert_{\ell^q}.
+\end{aligned}
+\end{equation}
+
+\item Problem 1.5.12
+
+First, consider $\Omega = [1, \infty), p = 1, q = 2$, and
+$f(x) = \frac{1}{x} \in L^q $, but $f(x)\notin L^p $. Thus $L^p $ does not belong to $L^q $.
+
+On the other hand, consider $\Omega = [1, \infty), p = 1, q = 2 $, and 
+\begin{equation}
+f(x) = \left\{
+\begin{aligned}
+&n, \quad n\le x < n+\frac{1}{n^3} \\
+&0, \quad n+\frac{1}{n^3} \le x < n+1
+\end{aligned}
+\right.
+\end{equation}
+for each $n\in\mathbb{Z}$. Then $f\in L^p $ but $f\notin L^q $. Thus $L^q $ does not belong to $L^p $.
+
+\end{enumerate}
+\end{document}
+87
