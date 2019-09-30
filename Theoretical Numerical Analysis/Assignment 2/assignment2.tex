@@ -1,0 +1,154 @@
+
+\documentclass{article}%
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{amsfonts}%
+\usepackage{amssymb}
+
+
+\setlength{\topmargin}{-0.75in}
+\setlength{\textheight}{9.25in}
+\setlength{\oddsidemargin}{0.0in}
+\setlength{\evensidemargin}{0.0in}
+\setlength{\textwidth}{6.5in}
+\def\labelenumi{\arabic{enumi}.}
+\def\theenumi{\arabic{enumi}}
+\def\labelenumii{(\alph{enumii})}
+\def\theenumii{\alph{enumii}}
+\def\p@enumii{\theenumi.}
+\def\labelenumiii{\arabic{enumiii}.}
+\def\theenumiii{\arabic{enumiii}}
+\def\p@enumiii{(\theenumi)(\theenumii)}
+\def\labelenumiv{\arabic{enumiv}.}
+\def\theenumiv{\arabic{enumiv}}
+\def\p@enumiv{\p@enumiii.\theenumiii}
+\pagestyle{plain}
+\setcounter{secnumdepth}{0}
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\newcommand{\lv}{\lVert}
+\newcommand{\rv}{\rVert}
+
+\begin{document}
+
+\title{Theoretical Numerical Analysis, Assignment 2}
+\author{Chuan Lu}
+\date{\today}
+\maketitle
+
+\begin{enumerate}
+
+\item Problem 2.4.2
+
+By definition,
+\begin{equation}
+\begin{aligned}
+\lv L_n\rv &= \sup_{v\ne 0}\frac{\lv L_n v\rv}{\lv v\rv}  = \sup_{v \ne 0}\frac{\lv \sum_{i=0}^{n} w_i^{(n)} v(x_i^{(n)}) \rv}{\lv v\rv} \\
+&\le \sup_{v \ne 0}\frac{\sum_{i=0}^{n}|w_i^{(n)|}\lv v\rv}{\lv v\rv} \\
+&= \sum_{i=0}^{n}\lv |w_i^{(n)}|.
+\end{aligned}
+\end{equation}
+On the other hand, let $v(x) =  1$, then RHS becomes
+\begin{equation}
+\frac{\lv w_i^{(n)} v\rv}{\lv v\rv} = \sum_{i=0}^{n}|w_i^{(n)}|,
+\end{equation}
+so
+\begin{equation}
+\lv L_n\rv = \sum_{i=0}^{n}|w_i^{(n)}|.
+\end{equation}
+
+\item Problem 2.4.3
+
+From the textbook we only need to show that 
+\begin{equation}
+\sup_n \sum_{i=0}^{n}|w_i^{(n)}| < \infty.
+\end{equation}
+
+By the assumption,
+\begin{equation}
+\sup_n \sum_{i=0}^{n}|w_i^{(n)}| = \sup_n \sum_{i=1}^{n}w_i^{(n)} = \sup_n L_n u,
+\end{equation}
+where $u = u(x) \equiv 1$. Since for all $n$, $u\in \mathbb{P}_{d(n)} $,
+\begin{equation}
+L_n u = Lu = 1,
+\end{equation}
+we know $\sup L_n u < \infty $.
+
+\item Problem 2.4.5
+
+First, consider $V = \mathbb{P}[0, 1] $. For a fixed element $v\in \mathbb{P}$, we already know the error of composite trapezoidal rule is
+\begin{equation}
+E(v) = \frac{1}{12n^3}\sum_{i=0}^{n-1}v''(\xi_i)\le \frac{1}{12n^2}\lv v''\rv.
+\end{equation}
+Since $\lv v'' \rv < \infty$, we know $E(v) \to 0$ as $n\to\infty$, hence $L_n v \to L_v $.
+
+On the other hand, 
+\begin{equation}
+\lv L_n\rv = \sum_{i=0}^{n}|w_i^{(n)}| = 1
+\end{equation}
+for all $n$, so $\sup \lv L_n\rv < \infty $. By Banach-Steinhaus theorem, $L_n v\to Lv $ for all $v\in C[0, 1]$.
+
+\item Problem 2.5.4
+
+By (2.5.5),
+\begin{equation}
+\ell(v) = (u, v)
+\end{equation}
+for all $v\in V$. Then let $v = e_j $, we have
+\begin{equation}
+\ell(e_j) = (u, e_j)
+\end{equation}
+for all $j$. Then
+\begin{equation}
+u = \sum_{j=1}^{\infty}(u, e_j)e_j = \sum_{j=1}^{\infty}\ell(e_j)e_j.
+\end{equation}
+
+\item Problem 2.7.3
+
+$\Rightarrow$: If $u_n \to u $, then
+\begin{equation}
+\lim_{n\to\infty} \lv u_n - u\rv = 0,
+\end{equation}
+so for each $\ell in V'$, 
+\begin{equation}
+\lim_{n\to\infty}\lv \ell(u_n) - \ell(u)\rv \le\lim_{n\to\infty}\lv \ell\rv \lv u_n-u\rv = 0.
+\end{equation}
+Then $u_n \rightharpoonup u $. Notice $\lv u_n-u\rv \ge \lv u_n\rv - \lv u\rv $, and $\lv u - u_n\rv \ge \lv u\rv - \lv u_n\rv $ we have
+\begin{equation}
+\lim_{n\to\infty}\lv u_n\rv - \lv u\rv \le 0, \ \lim_{n\to\infty} \lv u \rv - \lv u_n\rv \le 0.
+\end{equation}
+Thus $\lv u_n\rv \to \lv u\rv $.
+
+$\Leftarrow$: Consider
+\begin{equation}
+\lim_{n\to\infty}\lv u_n-u\rv^2 = \lim_{n\to\infty}\lv u_n\rv^2 + \lv u\rv^2 - (u_n, u) - (u, u_n),
+\end{equation}
+and both $(u, \cdot)$ and $(\cdot, u)$ are linear functionals on $V$, we have
+\begin{equation}
+\lim_{n\to\infty}\lv u_n - u\rv^2 = \lim_{n\to\infty} \lv u_n\rv^2 + \lv u\rv^2 - \lv u\rv^2 - \lv u\rv^2 = 0.
+\end{equation}
+Hence $\lv u - u_n\rv \to 0 $.
+
+\end{enumerate}
+\end{document}
