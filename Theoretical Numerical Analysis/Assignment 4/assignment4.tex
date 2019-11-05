@@ -1,0 +1,161 @@
+
+\documentclass{article}%
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{amsfonts}%
+\usepackage{amssymb}
+
+
+\setlength{\topmargin}{-0.75in}
+\setlength{\textheight}{9.25in}
+\setlength{\oddsidemargin}{0.0in}
+\setlength{\evensidemargin}{0.0in}
+\setlength{\textwidth}{6.5in}
+\def\labelenumi{\arabic{enumi}.}
+\def\theenumi{\arabic{enumi}}
+\def\labelenumii{(\alph{enumii})}
+\def\theenumii{\alph{enumii}}
+\def\p@enumii{\theenumi.}
+\def\labelenumiii{\arabic{enumiii}.}
+\def\theenumiii{\arabic{enumiii}}
+\def\p@enumiii{(\theenumi)(\theenumii)}
+\def\labelenumiv{\arabic{enumiv}.}
+\def\theenumiv{\arabic{enumiv}}
+\def\p@enumiv{\p@enumiii.\theenumiii}
+\pagestyle{plain}
+\setcounter{secnumdepth}{0}
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\newcommand{\lv}{\lVert}
+\newcommand{\rv}{\rVert}
+
+\begin{document}
+
+\title{Theoretical Numerical Analysis, Assignment 4}
+\author{Chuan Lu}
+\date{\today}
+\maketitle
+
+\begin{enumerate}
+
+\item Problem 3.5.3
+
+Consider an homomorphism $[a, b]$ to $[-1, 1]$, where $x\to \frac{2x-a-b}{b-a}$. Then the polynomials
+$$
+\tilde{L}_n(x) = L_n(\frac{2x-a-b}{b-a})
+$$
+are the Legendre polynomials on $[a, b]$, where $L_n $ are the Legendre polynomials on $[-1, 1]$. 
+
+Similarly, 
+$$
+\tilde{T}_n(x) = T_n(\frac{2x-a-b}{b-a})
+$$
+are the Chebyshev polynomials on $[a, b]$, where $T_n $ are the Chebyshev polynomials on $[-1, 1]$. The weight function should be
+$$
+\tilde{w}(x) = \frac{1}{\sqrt{1-(\frac{2x-a-b}{b-a})^2}}
+$$
+
+\item Problem 3.5.5
+
+Let 
+$$
+xp_n(x) = \sum_{i=0}^{n+1}\alpha_i p_i(x), 
+$$
+then take inner product $(\cdot, \cdot)_{0, w} $ with $p_j $ on both sides,
+$$
+(xp_n, p_j) = \alpha_j\lVert p_j\rVert^2.
+$$
+For $j\le n-2$, $xp_j $ is a linear combination of $p_k$ for $0\le k\le n-1$,
+$$
+(xp_n, p_j) = \int xp_np_jw dx = \int p_n\sum_{k=0}^{n-1}\beta_k p_kw dx = \sum_{k=0}^{n-1}\beta_k\int p_n p_kwdx = 0.
+$$
+Then $\alpha_j = 0 $ for $j\le n-2$. So
+$$
+xp_n = \alpha_{n-1}p_{n-1} + \alpha_{n}p_n +\alpha_{n+1}p_{n+1},
+$$
+which is 
+$$
+p_{n+1}(x) = \frac{x-\alpha_n}{\alpha_{n+1}}p_n - \frac{\alpha_{n-1}}{\alpha_{n+1}}p_{n-1}.
+$$
+
+\item Problem 3.5.8
+
+Let
+$$
+T_n(x) = \cos(n\arccos x) = 0,
+$$
+we have
+$$
+x = \cos(\frac{1}{n}(k\pi+\frac{1}{2}\pi)), \ k\in \mathbb{Z}, \ \frac{1}{n}(k+\frac{1}{2})\pi \in [-1, 1].
+$$
+Then $k = [-\frac{n}{\pi}-\frac{1}{2}, \frac{n}{\pi}-\frac{1}{2}]\cap \mathbb{Z}$.
+
+Let
+$$
+T_n(x) = \cos(n\arccos x) = \pm 1,
+$$
+we have
+$$
+x = \cos(\frac{k\pi}{n}), \ k\in\mathbb{Z}, \ \frac{k\pi}{n}\in [-1, 1].
+$$
+Then
+$k = [-\frac{n}{\pi}, \frac{n}{\pi}]\cap \mathbb{Z}$.
+
+\item Problem 3.6.2
+
+Consider $v \in V_1^\perp $ and $v_1\in V_1 $,
+$$
+(v, v_1) = \int_{-1}^1 v v_1 dx = \int_{0}^1vv_1dx = 0
+$$
+for all $v_1\in V_1 $. First, consider $v\in W = \{v\in V\mid v(x) = 0 \text{a.e. in} (0, 1) \}$, then each $v\in W$ satisties the condition above. On the other hand, if $\exists v\in V_1^\perp \setminus W $, consider $u(x)\in V_1 $, s.t.
+$$
+u(x) = \left\{
+\begin{aligned}
+&0, x\in (-1, 0], \\
+&sgn(v(x)), x\in (0, 1),
+\end{aligned}
+\right.
+$$
+then since $v$ is not 0 a.e. on $(0, 1)$,
+$(u, v) > 0$. Hence $V_1^\perp = W $.
+
+\item Problem 3.7.5
+
+$$
+\begin{aligned}
+\phi_j(x) &= \frac{2}{2n+1}D_n(x-x_j) = \frac{1}{2n+1}+\frac{2}{2n+1}\sum_{j=1}^{n}\cos(j(x-x_j)) \\
+&= \frac{1}{2n+1} + \frac{2}{2n+1}\sum_{j=1}^{n}\cos jx_j\cos jx + \frac{2}{2n+1}\sum_{j=1}^n\sin jx_j \sin jx \in \mathbb{T}_n,
+\end{aligned}
+$$
+and
+$$
+\phi_j(x_j) = \frac{1}{2n+1}+\frac{2}{2n+1}\sum_{i=1}^{n}1 = 1,
+$$
+$$
+\phi_j(x_k) = 
+$$
+
+
+\end{enumerate}
+\end{document}

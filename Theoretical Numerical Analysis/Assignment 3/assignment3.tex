@@ -1,0 +1,170 @@
+
+\documentclass{article}%
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{amsfonts}%
+\usepackage{amssymb}
+
+
+\setlength{\topmargin}{-0.75in}
+\setlength{\textheight}{9.25in}
+\setlength{\oddsidemargin}{0.0in}
+\setlength{\evensidemargin}{0.0in}
+\setlength{\textwidth}{6.5in}
+\def\labelenumi{\arabic{enumi}.}
+\def\theenumi{\arabic{enumi}}
+\def\labelenumii{(\alph{enumii})}
+\def\theenumii{\alph{enumii}}
+\def\p@enumii{\theenumi.}
+\def\labelenumiii{\arabic{enumiii}.}
+\def\theenumiii{\arabic{enumiii}}
+\def\p@enumiii{(\theenumi)(\theenumii)}
+\def\labelenumiv{\arabic{enumiv}.}
+\def\theenumiv{\arabic{enumiv}}
+\def\p@enumiv{\p@enumiii.\theenumiii}
+\pagestyle{plain}
+\setcounter{secnumdepth}{0}
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\newcommand{\lv}{\lVert}
+\newcommand{\rv}{\rVert}
+
+\begin{document}
+
+\title{Theoretical Numerical Analysis, Assignment 2}
+\author{Chuan Lu}
+\date{\today}
+\maketitle
+
+\begin{enumerate}
+
+\item Problem 3.1.5
+
+First, as $f$ is continuous, we have
+$$
+\lim_{t\to 0^+}f(-\log\frac{t}{a}) = \lim_{t\to\infty}f(t) = 0.
+$$
+Thus 
+$$
+g(t) = \left\{
+\begin{aligned}
+&f(-\log t/a), \quad & 0 < t \le 1, \\
+&0, \quad & t = 0,
+\end{aligned}
+\right.
+$$
+is continuous. By Weierstrauss Approximation Theorem, for $\epsilon_n = \frac{1}{n} $, there is a polynomial $p$ of degree $d_n $, s.t.
+$$
+\lVert f(-\log t/a) - p(t)\rVert_\infty \le \epsilon_n.
+$$
+Let $x = -\log t/a$, then this is just 
+$$
+\lVert f(x) - \sum_{j=0}^{d_n}c_{n, j}e^{-jax}\rVert_\infty \le \epsilon_n.
+$$
+Then we can construct a list of desired funtions in a ``stepwise'' way, i.e., let $c_{m, j} = 0 $ if $d_{n-1} < m \le d_n$ for $q_n $.
+
+\item Problem 3.2.4
+
+We can see that 
+$$
+V_n(x_i) = 0, \quad 0\le i\le n-1.
+$$
+Also, we can notice that $V_n $ is a polynomial with degree up to $n$, so
+$$
+V_n = c_n(x-x_0)\cdots(x-x_{n-1}).
+$$
+The coefficient of the highest term is 
+$$
+c_n = \det\left(
+\begin{matrix}
+1 & x_0 & \cdots & x_0^{n-1} \\
+\hdots & \hdots & \hdots & \hdots \\
+1 & x_{n-1} & \cdots & x_{n-1}^{n-1}
+\end{matrix}
+\right)
+= V_{n-1}(x_{n-1}).
+$$
+Thus, 
+$$
+\begin{aligned}
+V_n(x_n) &= V_{n-1}(x_{n-1})(x_n-x_0)\cdots(x_n-x_{n-1}) \\
+&= V_{n-2}(x_{n-2})(x_{n-1}-x_0)\cdots(x_{n-1}-x_{n-2})(x_n-x_0)\cdots(x_n-x_{n-1}) \\
+&= \cdots \\
+&= \prod_{j>i}(x_j-x_i).
+\end{aligned}
+$$
+
+\item Problem 3.3.8
+
+By the properties of inner products, for $\lambda \in [0, 1]$ and $u, v\in V$,
+$$
+\begin{aligned}
+f(\lambda u+(1-\lambda)v) &= (\lambda u+(1-\lambda)v, \lambda u+(1-\lambda)v) \\
+&= \lambda^2 \lVert u\rVert^2 + (1-\lambda)^2\lVert v\rVert^2 + 2\lambda(1-\lambda)(u, v) \\
+&\le\lambda^2\lVert u\rVert^2+(1-\lambda)^2 \lVert v\rVert^2 + 2\lambda(1-\lambda)\lVert u\rVert\lVert v\rVert \\
+&=\lambda \lVert u\rVert^2+(1-\lambda)\lVert v\rVert^2-\lambda(1-\lambda) (\lVert u\rVert^2 + \lVert v\rVert^2 - 2\lVert u\rVert \lVert v\rVert) \\
+&= \lambda f(u)+(1-\lambda)f(v)-\lambda(1-\lambda)(\lVert u\rVert-\lVert v\rVert)^2\\
+&\le \lambda f(u)+(1-\lambda)f(v).
+\end{aligned}
+$$
+When $u\ne v$, the last inequality is strict. Hence $f$ is strictly convex.
+
+\item Problem 3.3.9
+
+Suppose 
+$$
+\lv u+v\rv = \lv u\rv+\lv v\rv,
+$$
+then
+$$
+\lv u\rv^2+\lv v\rv^2+2\lv u\rv\lv v\rv = \lv u\rv^2+\lv v\rv^2+2(u,v) \le \lv u\rv^2+\lv v\rv^2+2\lv u\rv\lv v\rv.
+$$
+By Cauchy-Schwarz inequality, 
+$$
+u = v.
+$$
+Then the inner product space is strictly normed.
+
+\item Problem 3.4.10
+
+$$
+p_n(x) = \sum_{i=0}^{n}(f, \phi_i)\phi_i = \sum_{i=0}^n (f, \cos jx)\cos jx+\sum_{i=1}^{n}(f, \sin jx)\sin jx,
+$$
+and
+$$
+(f, \cos jx) = \int_{0}^{2\pi} f(x)\cos(jx) dx, \ (f, \sin jx) = \int_{0}^{2\pi} f(x)\sin(jx)dx.
+$$
+Particularly,
+$$
+(f, 1) = \frac{1}{2\pi}\int_0^{2\pi}f(x)dx.
+$$
+So the formula (3.4.9) is derived.
+
+For the Parseval's equality, 
+$$
+\lv f\rv_{L^2(0, 2\pi)}^2 = \frac{1}{2}a_0^2+\sum_{i=1}^{\infty}(a_j^2+b_j^2).
+$$
+
+\end{enumerate}
+\end{document}
