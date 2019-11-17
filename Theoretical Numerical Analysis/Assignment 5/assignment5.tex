@@ -1,0 +1,147 @@
+
+\documentclass{article}%
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{amsfonts}%
+\usepackage{amssymb}
+
+
+\setlength{\topmargin}{-0.75in}
+\setlength{\textheight}{9.25in}
+\setlength{\oddsidemargin}{0.0in}
+\setlength{\evensidemargin}{0.0in}
+\setlength{\textwidth}{6.5in}
+\def\labelenumi{\arabic{enumi}.}
+\def\theenumi{\arabic{enumi}}
+\def\labelenumii{(\alph{enumii})}
+\def\theenumii{\alph{enumii}}
+\def\p@enumii{\theenumi.}
+\def\labelenumiii{\arabic{enumiii}.}
+\def\theenumiii{\arabic{enumiii}}
+\def\p@enumiii{(\theenumi)(\theenumii)}
+\def\labelenumiv{\arabic{enumiv}.}
+\def\theenumiv{\arabic{enumiv}}
+\def\p@enumiv{\p@enumiii.\theenumiii}
+\pagestyle{plain}
+\setcounter{secnumdepth}{0}
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\newcommand{\lv}{\lVert}
+\newcommand{\rv}{\rVert}
+
+\begin{document}
+
+\title{Theoretical Numerical Analysis, Assignment 5}
+\author{Chuan Lu}
+\date{\today}
+\maketitle
+
+\begin{enumerate}
+
+\item Problem 4.1.4
+
+(a)
+$$
+\begin{aligned}
+S_nf(x) &= \frac{1}{2\pi}\int_{-\pi}^{\pi}f(x)dx + \sum_{j=1}^{n}\frac{1}{\pi}\int_{-\pi}^\pi f(x)\cos(jx)dx \cos(jx) + \frac{1}{\pi}\int_{-\pi}^\pi f(x)\sin(jx)dx \sin(jx) \\
+&= \frac{1}{2\pi}\int_{-\pi}^{\pi}f(x)dx + \sum_{j=1}^{n}\frac{1}{\pi}\int_{-\pi}^{\pi} f(t)(\cos(jt)\cos(jx)+\sin(jt)\sin(jx))dt \\
+&= \frac{1}{2\pi}\int_{-\pi}^{\pi}f(x)dx + \sum_{j=1}^{n}\frac{1}{\pi}\int_{-\pi}^{\pi} f(t)\cos(j(t-x))dt \\
+&= \int_{-\pi}^{\pi}f(t)K_n(t-x)dt.
+\end{aligned}
+$$
+
+(b)
+$$
+\left.\int_{-\pi}^{0} K_n(t)dt = \int_{-\pi}^0\frac{1}{2\pi} + \frac{1}{\pi}\sum_{i=1}^{n}\cos(jt)dt = \frac{1}{2} + \frac{1}{\pi}\sum_{i=1}^{n}\frac{1}{j}\sin(jt)\right|_{-pi}^0 = \frac{1}{2}.
+$$
+Since $K_n $ is  an even function, we know $\int_{0}^{\pi}K_n(t)dt = \frac{1}{2} $.
+
+When $t = 2k\pi$, we know $K_n(t) = \frac{1}{2\pi}+\frac{n}{\pi} $; When $t \ne 2k\pi$, 
+$$
+k_n(t) = \frac{1}{2\pi \sin(t/2)}(\sin(t/2)+\sum_{j=1}^{n}(\sin((j+\frac{1}{2})t) - \sin((j-\frac{1}{2})t))) = \frac{1}{2\pi\sin(t/2)}\sin((n+1/2)t)
+$$
+
+(c), (d)
+This are trivial.
+
+
+\item Problem 4.2.1
+
+(4.2.5) is trivial since $\mathcal{F}$ is linear.
+
+(4.2.6)
+$$
+\lVert \mathcal{F}(f)\rVert_{L^\infty} \le \frac{1}{(2\pi)^{d/2}}\int_{\mathbb{R}^d} |f|dx = (2\pi)^{-d/2}\lVert f\rVert_{L^1}.
+$$
+
+(4.2.7)
+This can be proven by $|\alpha|$ integration by parts, and using the property that $\partial f \to 0$ as $x\to\infty$.
+
+(4.2.8)
+This also can be proven by $|\alpha|$ integration by parts.
+
+\item Problem 4.2.8
+
+Let $g(x) = \overline{f(-x)}, h = f\ast g$. Then
+$$
+\mathcal{F}(h) = \mathcal{F}(f)\mathcal{F}(g) = \mathcal{F}(f)^2.
+$$
+Since
+$$
+h(0) = \int_{\mathbb{R}^d}f(x)g(-x)dx = \lVert f\rVert_{L^2}^2,
+$$
+$$
+h(0) = (2\pi)^{-d/2}\int_{R^d}\mathcal{F}(h)(y)dy = \lVert \mathcal{F}(f)\rVert_{L^2}^2,
+$$
+we have $ \lVert \mathcal{F}(f)\rVert_{L^2}^2 = \lVert f\rVert_{L^2}^2 $.
+
+\item Problem 4.3.2
+
+Notice
+$$
+|\hat{y_k}|^2 = \hat{y_k}\overline{\hat{y_k}} = \sum_{j=0}^{n-1}y_j\sum_{l=0}^{n-1}y_l \exp(k(j-l)2\pi i/n),
+$$
+then
+$$
+\begin{aligned}
+\sum_{k=0}^{n-1}|\hat{y_k}|^2 &= \sum_{k=0}^{n-1}\sum_{j=0}^{n-1}y_j\sum_{l=0}^{n-1}y_l \exp(k(j-l)2\pi i/n) \\
+&= \sum_{j=0}^{n-1}y_j\sum_{l=0}^{n-1}y_l\sum_{k=0}^{n-1}\exp(k(j-l)2\pi i/n) \\
+&= \sum_{j=0}^{n-1}y_j\sum_{l=0}^{n-1}y_l\frac{1-\exp((j-l)2\pi i )}{1-\exp((j-l)2\pi i/n )} \\
+&= n\sum_{j=0}^{n-1}y_j^2
+\end{aligned}
+$$
+
+
+\item Problem 4.3.3
+
+For $0\le k < n$,
+$$
+(F_{2n}y)_k = (F_ny_e)_k + (D_nF_ny_o)_k = \mathcal{F}_n(\{y_{2j}\})_k + w_{2n}^{-k}\mathcal{F}_n(\{y_{2j+1}\})_k,
+$$
+$$
+(F_{2n}y)_{n+k} = (F_ny_e)_k - (D_nF_ny_o)_k = \mathcal{F}_n(\{y_{2j}\})_k - w_{2n}^{-k}\mathcal{F}_n(\{y_{2j+1}\})_k.
+$$
+
+\end{enumerate}
+\end{document}
