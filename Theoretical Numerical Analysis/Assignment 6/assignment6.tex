@@ -1,0 +1,191 @@
+
+\documentclass{article}%
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{amsfonts}%
+\usepackage{amssymb}
+
+
+\setlength{\topmargin}{-0.75in}
+\setlength{\textheight}{9.25in}
+\setlength{\oddsidemargin}{0.0in}
+\setlength{\evensidemargin}{0.0in}
+\setlength{\textwidth}{6.5in}
+\def\labelenumi{\arabic{enumi}.}
+\def\theenumi{\arabic{enumi}}
+\def\labelenumii{(\alph{enumii})}
+\def\theenumii{\alph{enumii}}
+\def\p@enumii{\theenumi.}
+\def\labelenumiii{\arabic{enumiii}.}
+\def\theenumiii{\arabic{enumiii}}
+\def\p@enumiii{(\theenumi)(\theenumii)}
+\def\labelenumiv{\arabic{enumiv}.}
+\def\theenumiv{\arabic{enumiv}}
+\def\p@enumiv{\p@enumiii.\theenumiii}
+\pagestyle{plain}
+\setcounter{secnumdepth}{0}
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\newcommand{\lv}{\lVert}
+\newcommand{\rv}{\rVert}
+
+\begin{document}
+
+\title{Theoretical Numerical Analysis, Assignment 6}
+\author{Chuan Lu}
+\date{\today}
+\maketitle
+
+\begin{enumerate}
+
+\item Problem 5.2.2
+
+First, $D$ is invertible since $A$ is strictly diagonally dominant. For Jacobi method, define the operator $T: \mathbb{R}^m\to \mathbb{R}^m $:
+$$
+Tx = D^{-1}b - D^{-1}(L+U)x,
+$$
+then the Jacobi method can be written as 
+$$
+x_{n+1} = Tx_{n}.
+$$
+We should show that $T$ is contractive:
+$$
+\begin{aligned}
+\lv Tx - Ty\rv = \lv D^{-1}(L+U)(x-y)\rv \le \lv D^{-1}(L+U)\rv \lv x-y\rv.
+\end{aligned}
+$$
+Then the convergence of Jacobi method is equavilent to 
+$$
+r_\sigma(B) < 1,
+$$
+where $B = D^{-1}(L+U) $. If there is an eigenvalue $\lambda $ of $B$ such that $|\lambda| \ge 1$, consider the matrix $C = \lambda D + L + U$. We know $C$ is also strictly diagonally dominant and thus invertible. Notice
+$$
+\det(\lambda I - B) = \det(D^{-1})\det(C) \ne 0,
+$$
+which makes a contradictory with that $\lambda$ is an eigenvalue of $B$. Hence, $r_\sigma(B) < 1 $.
+
+For Gauss-Seidal method, the iteration matrix is $B = (D+L)^{-1}U $. Using the same process,
+$$
+\det(\lambda I - B) = \det((D+L)^{-1} )\det(\lambda(D+L) - U).
+$$
+Since $\lambda (D+L) - U$ is strictly diagonally dominant and thus invertible,
+$$
+\det(\lambda I - B)\ne 0,
+$$
+making a contradictory. Hence, $r_\sigma(B) < 1 $.
+
+
+\item Problem 5.2.12
+
+Consider the function
+$$
+u(s) = \exp(-\int_{a}^{s}h(r)dr)\int_{a}^{s} h(r) f(r)dr,
+$$
+then
+$$
+u'(s) = (f(s) - \int_{a}^{s}h(r)f(r)dr)h(s)\exp(-\int_{a}^{s} h(r)dr) \le g(s)h(s)\exp(-\int_{a}^{s} h(r)dr).
+$$
+Then
+$$
+u(t) \le \int_{a}^{t} g(s)h(s)\exp(-\int_{a}^{s} h(r)dr)ds,
+$$
+and
+$$
+\begin{aligned}
+\int_{a}^{t}h(s)f(s)ds &= u(t)\exp(-\int_{a}^t h(s)ds)\\
+&\le \int_{a}^{t}g(s)h(s)\exp(\int_{a}^{t}h(r)dr - \int_{a}^{s}h(r)dr)ds \\
+&= \int_{a}^{t}g(s)h(s)\exp(\int_{s}^{t}h(r)dr)ds.
+\end{aligned}
+$$
+Hence,
+$$
+f(t)\le g(t) + \int_{a}^{t} h(s)f(s)ds \le g(t) + \int_{a}^{t}g(s)h(s)\exp(\int_{s}^{t}h(r)dr)ds.
+$$
+
+If $g$ is nondecreasing, we know on the above
+$$
+\begin{aligned}
+f(t) &\le g(t) + g(t)\int_{a}^{t}h(s)\exp(\int_{s}^t h(r)dr)ds \\
+&= g(t) - g(t)\exp(\left.\int_{s}^{t}h(r)dr)\right|_{s=a}^{s=t} \\
+&= g(t)\exp(\int_{a}^{t}h(s)ds).
+\end{aligned}
+$$
+
+When $h = c$, substituting it into the equalities, we can get the results.
+
+
+\item Problem 5.3.2
+
+Consider a vector $h = (h_1, h_2)\ne (0, 0)$. Then
+$$
+\lim_{t\to 0}\frac{f(u_0+th)-f(u_0)}{t} = \lim_{t\to 0}\frac{t^h_1h_2^3}{h_1^2+t^3h_2^4}.
+$$
+When $h_1 = 0 $, the limit is just 0. When $h_1\ne 0 $, the limit also goes to 0. Hence, $A \equiv 0$ and $f$ is Gateaux differentiable.
+
+However, 
+$$
+f(u_0+h) - f(u_0) = \frac{h_1h_2^3}{h_1^2+h_2^4}.
+$$
+When $h_1 = 0 $, the value $\to 0$ as $|h_2|\to 0 $. When $h_1 = h_2\ne 0 $, the value $\to \frac{1}{1+h_2^2}\to 1$ as $|h_2|\to 0$. Hence, $f$ is not Frechet differentiable.
+
+\item Problem 5.3.7
+
+$$
+\begin{aligned}
+\lim_{h\to 0}\frac{f(x+h)-f(x)}{h} &= \lim_{h\to 0}\left(\frac{(1-\cos h)\sin x+ \cos x\sin h}{h}, \frac{(1-\cos h)\cos x - \sin x\sin h}{h}\right)^\top \\
+&= (\cos x, -\sin x)^\top.
+\end{aligned}
+$$
+Hence,
+$$
+f'(x) = (\cos x, -\sin x)^\top.
+$$
+
+In order to satisfy the provided equation,
+$$
+f'(2\pi \theta) = 0 
+$$
+should be satisfied. However, $f'(x) = 0$ has no solution on $[0, 2\pi]$. 
+
+\item Problem 5.4.2
+
+Let 
+$$
+F(u) = \alpha u - \mu \Delta u + (u\cdot \nabla) u - f,
+$$
+then the equation is $F(u) = 0$. The derivative can be computed as
+$$
+F'(u)(v) = \lim_{h\to 0}\frac{1}{h}(F(u+hv) - F(u)) = \alpha v - \mu\Delta v + 2\nabla u\cdot \nabla v.
+$$
+Hence, at each step, solve a linearized boundary value equation
+$$
+\begin{aligned}
+\alpha u_{n+1} - \mu \nabla u_{n+1} + 2\nabla (u_{n+1}-u_n)\cdot \nabla (u_{n+1}- u_n) = f + \alpha u_n - \mu\nabla u_n, & \quad\text{in}~ \Omega, \\
+u_{n+1} = g_0, & \quad\text{on}~ \Gamma_0, \\
+\mu\frac{\partial u_{n+1}}{\partial \nu} = g_1, & \quad\text{on}~ \Gamma_1.
+\end{aligned}
+$$
+
+\end{enumerate}
+\end{document}
