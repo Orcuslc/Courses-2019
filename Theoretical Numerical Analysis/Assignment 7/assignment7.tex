@@ -1,0 +1,148 @@
+
+\documentclass{article}%
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{amsfonts}%
+\usepackage{amssymb}
+
+
+\setlength{\topmargin}{-0.75in}
+\setlength{\textheight}{9.25in}
+\setlength{\oddsidemargin}{0.0in}
+\setlength{\evensidemargin}{0.0in}
+\setlength{\textwidth}{6.5in}
+\def\labelenumi{\arabic{enumi}.}
+\def\theenumi{\arabic{enumi}}
+\def\labelenumii{(\alph{enumii})}
+\def\theenumii{\alph{enumii}}
+\def\p@enumii{\theenumi.}
+\def\labelenumiii{\arabic{enumiii}.}
+\def\theenumiii{\arabic{enumiii}}
+\def\p@enumiii{(\theenumi)(\theenumii)}
+\def\labelenumiv{\arabic{enumiv}.}
+\def\theenumiv{\arabic{enumiv}}
+\def\p@enumiv{\p@enumiii.\theenumiii}
+\pagestyle{plain}
+\setcounter{secnumdepth}{0}
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\newcommand{\lv}{\lVert}
+\newcommand{\rv}{\rVert}
+
+\begin{document}
+
+\title{Theoretical Numerical Analysis, Assignment 7}
+\author{Chuan Lu}
+\date{\today}
+\maketitle
+
+\begin{enumerate}
+
+\item Problem 6.1.1
+
+By Taylor expansion,
+$$
+af(x+h)+bf(x)+cf(x-h) = (a+b+c)f(x) + h(a-c)f'(x) + \frac{1}{2}h^2(a+c)f''(x) + \frac{1}{6}h^3(a-c)f'''(x) + O(h^4).
+$$
+In order to make it be an approximation of $f'(x)$, we must have
+$$
+a+b+c = 0, \ h(a-c) = 1.
+$$
+There are three variables with two equations, so we can further let
+$$
+a+c = 0.
+$$
+Then, by letting
+$$
+a = \frac{1}{2h}, b = 0, c = -\frac{1}{2h},
+$$
+we notice $a-c\ne 0$, so
+$$
+|af(x+h)+bf(x)+cf(x-h)-f'(x)| \le O(h^3).
+$$
+
+\item Problem 6.1.2
+
+The conditions now become
+$$
+a+b+c = 0, \ a-c = 0, \ \frac{1}{2}h^2(a+c) = 1.
+$$
+There is one exact solution 
+$$
+a = c = \frac{1}{h^2}, \ b = -\frac{2}{h^2}.
+$$
+Notice
+$$
+a-c = 0, \ \frac{1}{24}h^2(a+c)\ne 0,
+$$
+so
+$$
+|af(x+h)+bf(x)+cf(x-h)-f''(x)| \le O(h^4).
+$$
+
+\item Problem 6.2.2
+
+\newcommand{\dt}{\Delta t}
+\newcommand{\dx}{\Delta x}
+
+The operator is defined as
+$$
+(1+2r)C(\dt)v(x) = r(C(\dt)v(x+\dx)+C(\dt)v(x-\dx)) + (1-2r)v(x) + r(v(x+\dx) + v(x-\dx)),
+$$
+where $r = \frac{\nu \dt}{2\dx^2}$.
+
+Then we have
+$$
+\lv C(\dt)v\rv \le \frac{2r}{1+2r}\lv C(\dt)v\rv + \frac{1-2r}{1+2r}\lv v\rv + \frac{2r}{1+2r}\lv v\rv,
+$$
+which means
+$$
+\frac{1}{1+2r}\lv C(\dt) v\rv \le \frac{1}{1+2r}\lv v\rv.
+$$
+Hence,
+$$
+\{C(\dt)\}\le 1
+$$
+is uniformly bounded. We also notice
+$$
+\lv C(\dt)^m\rv \le 1
+$$
+for any $m$, so by Lax equivalence thm, Crank-Nicolson scheme is consistent.
+
+\item Problem 6.3.1
+
+When $bc = 0$, the eignevalues are just $\lambda_j = a  $. Now we let $Q = aI + \sqrt{bc}D^{-1}\Lambda D $ as suggested by the hint, then $\lambda_j = a+\sqrt{bc}\hat{\lambda}_j $, where $\hat{\lambda}$ are the eigenvalues of $\Lambda$. 
+
+We can see that $\Lambda = \Lambda_n $ satisfies
+$$
+\det(\lambda I - \Lambda_n) = \lambda \det(\lambda I - \Lambda_{n-1}) - \det(\lambda I - \Lambda_{n-2}),
+$$
+so by the roots of Chebyshev polynomials of the second kind, we know $\hat{\lambda}_j = 2\cos(\frac{j\pi}{N+1}) $. 
+
+\item Problem 6.3.2
+
+
+
+\end{enumerate}
+\end{document}
