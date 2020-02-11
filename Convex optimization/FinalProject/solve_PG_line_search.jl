@@ -88,6 +88,7 @@ for i = 1:K
 		end
 	end
 
+	println("x")
 	# update y
 	while true
 		# set as global variable
@@ -106,6 +107,7 @@ for i = 1:K
 	    end
 	end
 
+	println("y")
 	# update z
 	while true
 		# set as global variable
@@ -124,6 +126,7 @@ for i = 1:K
 		end
 	end
 
+	println("z")
 	# update w
 	while true
 		# set as global variable
@@ -141,7 +144,7 @@ for i = 1:K
 			break
 		end
 	end
-
+	println("w")
 	x = x1;
 	y = y1;
 	z = z1;

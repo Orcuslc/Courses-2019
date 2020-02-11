@@ -43,6 +43,8 @@ function Legendre_Normalized(x::Array, N::Integer)
 	return three_term_recurrence(x, N, p0, p1, rec)
 end
 
+function gauss_legendre()
+
 function simpson(f::Function, interval::Array, n::Integer)
 	#= 
 		Composite Simpson quadrature

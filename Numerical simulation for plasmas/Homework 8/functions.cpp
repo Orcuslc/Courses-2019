@@ -1,4 +1,4 @@
-#include "1d_linear_hydrodynamics.h"
+#include "2d_linear_hydrodynamics.h"
 #include <valarray>
 #include <iostream>
 #include <fstream>
@@ -113,3 +113,4 @@ void write(string path, valarray<double>& data) {
 	}
 	ofs << "\n";
 }
+

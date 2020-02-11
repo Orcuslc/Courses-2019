@@ -1,0 +1,176 @@
+\documentclass{article}%
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{amsfonts}%
+\usepackage{amssymb}
+
+
+\setlength{\topmargin}{-0.75in}
+\setlength{\textheight}{9.25in}
+\setlength{\oddsidemargin}{0.0in}
+\setlength{\evensidemargin}{0.0in}
+\setlength{\textwidth}{6.5in}
+\def\labelenumi{\arabic{enumi}.}
+\def\theenumi{\arabic{enumi}}
+\def\labelenumii{(\alph{enumii})}
+\def\theenumii{\alph{enumii}}
+\def\p@enumii{\theenumi.}
+\def\labelenumiii{\arabic{enumiii}.}
+\def\theenumiii{\arabic{enumiii}}
+\def\p@enumiii{(\theenumi)(\theenumii)}
+\def\labelenumiv{\arabic{enumiv}.}
+\def\theenumiv{\arabic{enumiv}}
+\def\p@enumiv{\p@enumiii.\theenumiii}
+\pagestyle{plain}
+\setcounter{secnumdepth}{0}
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\begin{document}
+
+\title{Interpretable Machine Learning, Assignment 1}
+\author{Chuan Lu}
+\date{February 5, 2020}
+\maketitle
+
+\newcommand{\hxi}{\hat{x}_i}
+\newcommand{\hw}{\hat{w}}
+
+\begin{enumerate}
+
+\item Problem 1.a
+
+Let $x_i, w\in\mathbb{R}^d $, and $\hxi = (1, x_i^\top)^\top ,\hw = (w_0, w^\top)^\top \in\mathbb{R}^{d+1} $. Denote
+\begin{equation}
+p(y = 1\mid \hxi) = \sigma(\hxi)
+\end{equation}
+then the loss function of logistic regression is
+\begin{equation}
+\begin{aligned}
+\mathcal{L} &= -\sum_{i=1}^{n}\Big ( y_i \log p(y = 1 \mid \hxi) + (1-y_i)\log (1- p(y = 1 \mid \hxi)\Big ) \\
+&= -\sum_{i=1}^{n} \Big( y_i \log\sigma(\hxi) + (1-y_i)\log(1-\sigma(\hxi))\Big),
+\end{aligned}
+\end{equation}
+
+and the gradient is
+\begin{equation}
+\begin{aligned}
+\frac{\partial}{\partial \hw}\mathcal{L} &= -\sum_{i=1}^{n} \Big( \frac{y_i}{\sigma(\hxi)}\frac{\partial \sigma}{\partial \hw}(\hxi) - \frac{1-y_i}{1-\sigma(\hxi)}\frac{\partial \sigma}{\partial \hw}(\hxi)\Big) \\
+&= \sum_{i=1}^{n}\frac{\sigma(\hxi)-y_i}{\sigma(\hxi)(1-\sigma(\hxi))}\frac{\partial \sigma}{\partial \hw}(\hxi).
+\end{aligned}
+\end{equation}
+
+Notice that
+\begin{equation}
+\begin{aligned}
+\frac{\partial \sigma}{\partial \hw}(\hxi) &= \frac{\partial}{\partial \hw}\frac{1}{1+e^{-\hxi^\top \hw}} = \frac{\hxi e^{-\hxi^\top \hw}}{(1+e^{-\hxi^\top \hw)^2}} = \sigma(\hxi)(1-\sigma(\hxi))\hxi,
+\end{aligned}
+\end{equation}
+
+then
+\begin{equation}
+\begin{aligned}
+\frac{\partial}{\partial \hw}\mathcal{L} &= \sum_{i=1}^{n}(\sigma(\hxi)-y_i)\hxi.
+\end{aligned}
+\end{equation}A
+
+Code for the gradient descent algorithm is in \texttt{optimizer.py}, and code for this problem is \texttt{problem 1a.ipynb}. In the implementations, we use the mean of losses for each sample instead of the sum, for a fair comparison between the training loss and test loss.
+
+The convergence plot is shown in Figure \ref{problem1a-convergence}, where the weights $\hw$ are intialized with zeros, and learning rate is $lr = 0.01$.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{problem1a.png}
+\caption{Convergence of loss v.s. number of iterations for Problem 1a, using gradient descent. The orange line shows the test loss, and the blue line represents the training loss.}
+\label{problem1a-convergence}
+\end{figure}
+
+\item Problem 1.b
+
+For this problem, we use the same preprocessing process with Problem 1.a. We use a linearly decreasing scheduler for temperature, and the weights $\hw$ are initialized with zeros. The convergence plot is shown in Figure \ref{problem1b-convergence}. 
+
+Code for simulated annealing is in \texttt{optimizer.py}, and code for this problem is \texttt{problem 1b.ipynb}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{problem1b.png}
+\caption{Convergence of loss v.s. number of iterations for Problem 1b, using simulated annealing. The orange line shows the test loss, and the blue line represents the training loss.}
+\label{problem1b-convergence}
+\end{figure}
+
+\item Problem 2
+
+Code for this problem is in \texttt{problem 1a.ipynb} and \texttt{problem 1b.ipynb}. 
+
+The ROC, precision-recall curve, AUC for Problem 1.a are shown in Figure \ref{problem1a-metric}. The F1-score is 0.1871006997261941. 
+
+The ROC, precision-recall curve, AUC for Problem 1.b are shown in Figure \ref{problem1b-metric}. The F1-score is 0.187528586674798. 
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{problem1a_metric.png}
+\caption{ROC, precision-recall curve, AUC for Problem 1.a (GD-solved logistic regression).}
+\label{problem1a-metric}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{problem1b_metric.png}
+\caption{ROC, precision-recall curve, AUC for Problem 1.b (SA-solved logistic regression).}
+\label{problem1b-metric}
+\end{figure}
+
+\item Problem 3
+
+Code for this problem is in \texttt{problem 3.ipynb}. We use the same preprocessing process as in Problem 1.a. 
+
+The ROC and AUC are shown in Figure \ref{problem3}. Although ROC, AUC of Lasso is the same with logistic regression, the number of non-zero coefficients is 9 instead of 109 for both solutions of logistic regression. This comes from the $L_1 $ penalty of lasso, while logistic regression does not have any penalty on the number of non-zero coefficients.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{problem3.png}
+\caption{ROC and AUC for Problem 3 (Lasso).}
+\label{problem3}
+\end{figure}
+
+\item Problem 4
+
+For this problem, we still use the same preprocessing process as in Problem 1.a. The code for this problem is in \texttt{problem 4.ipynb}.
+
+The feature importance plot for the 10 most important features is shown in Figure \ref{problem4-importance}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.4]{problem4_importance.png}
+\caption{Feature importance for Problem 4 (Random Forest).}
+\label{problem4-importance}
+\end{figure}
+
+The weights of each features are not consistent with the importance plot with problem 4(b). It might comes from the overfitting of logistic regression.
+
+
+\end{enumerate}
+
+
+\end{document}
