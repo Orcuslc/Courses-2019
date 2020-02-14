@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def sigma(x, w): # logistic sigmoid
 	return 1/(1+np.exp(-x.dot(w)))
 
@@ -10,8 +11,9 @@ def L(x, y, w): # loss
 	si = sigma(x, w)
 	return -np.mean(y*np.log(si) + (1-y)*np.log(1-si)), si
 
-def dL(x, y, si): # gradient
-	return np.mean((si - y)*x, axis = 0).reshape((-1, 1))
+def dL(x, y, si, w): # gradient
+	lam = 0
+	return np.mean((si - y)*x, axis = 0).reshape((-1, 1)) - 2*lam*w
 
 class Logistic_Regression:
 	def __init__(self):
@@ -25,10 +27,9 @@ class Logistic_Regression:
 		return self.w, hist
 
 	def predict(self, X):
-		return sigma(expand_constant(X), self.w)
-		
+		return sigma(expand_constant(X), self.w)		
 
-def gradient_descent_for_logistic_regression(X, y, w0, *, num_iter, lr, test_X = None, test_y = None, debug = False):
+def gradient_descent_for_logistic_regression(X, y, w0, *, num_iter, lr, test_X = None, test_y = None, debug = False, print_every = 1000):
 	"""Gradient descent for logistic regression
 	
 	Arguments:
@@ -50,9 +51,10 @@ def gradient_descent_for_logistic_regression(X, y, w0, *, num_iter, lr, test_X =
 			test_loss, _ = L(test_X, test_y, w0)
 			hist["test"].append(test_loss)
 
-		w = w0 - lr*dL(X, y, si) # GD
+		w = w0 - lr*dL(X, y, si, w0) # GD
 		if debug:
-			print("Iteration: {0}, training loss: {1}".format(i, loss))
+			if i % print_every == 0:
+				print("Iteration: {0}, training loss: {1}".format(i, loss))
 		w0 = w
 
 	return w, hist
@@ -82,7 +84,7 @@ def linearly_decreasing_temperature(i, num_iter, T0):
 	"""
 	return T0*(1-i/num_iter)
 
-def simulated_annealing_for_logistic_regression(X, y, w0, *, num_iter, temperature, neighbour, acceptance, test_X = None, test_y = None, debug = False):
+def simulated_annealing_for_logistic_regression(X, y, w0, *, num_iter, temperature, neighbour, acceptance, test_X = None, test_y = None, debug = False, print_every = 1000):
 	"""Simulated_annealing for logistic regression
 	
 	Arguments:
@@ -121,7 +123,8 @@ def simulated_annealing_for_logistic_regression(X, y, w0, *, num_iter, temperatu
 			acc = 1
 
 		if debug:
-			print("Iteration: {0}, training loss: {1}, {2} new state".format(i, new_loss, "accept" if acc else "reject"))
+			if i % print_every == 0:
+				print("Iteration: {0}, training loss: {1}, {2} new state".format(i, new_loss, "accept" if acc else "reject"))
 	
 	return w, hist
 				
